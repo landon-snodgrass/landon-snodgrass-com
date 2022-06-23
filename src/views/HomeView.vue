@@ -76,45 +76,55 @@ export default {
 
 <template>
     <div class="container">
-        <div class="fancy-header">
-            <h1>
-                Hello, I'm Landon.<span>/</span><span>/</span><span>/</span>
-            </h1>
-        </div>
-        <div class="fancy-subtitle">
-            <p class="lead">I'm a front-end engineer living in Seattle.</p>
-        </div>
-        <div class="skills">
-            <div class="underline">
-                <p class="lead">Technologies I use</p>
+        <div class="col-left">
+            <div class="fancy-header">
+                <h1>
+                    Hello, I'm Landon.<span>/</span><span>/</span><span>/</span>
+                </h1>
             </div>
-            <ul class="skills-frequency">
-                <li
-                    :class="{ active: currentSkillList == 'allTheTime' }"
-                    @click="changeCurrentSkillList('allTheTime')"
-                >
-                    All the time
-                </li>
-                <li
-                    :class="{ active: currentSkillList == 'sometimes' }"
-                    @click="changeCurrentSkillList('sometimes')"
-                >
-                    Sometimes
-                </li>
-                <li
-                    :class="{ active: currentSkillList == 'learning' }"
-                    @click="changeCurrentSkillList('learning')"
-                >
-                    Learning
-                </li>
-            </ul>
-            <div class="skills-container">
-                <Transition name="icon-fade" mode="out-in">
-                    <SkillsList
-                        :skill-list="skillList"
-                        :key="currentSkillList"
-                    />
-                </Transition>
+            <div class="fancy-subtitle">
+                <p class="lead">I'm a front-end engineer living in Seattle.</p>
+            </div>
+            <div class="skills">
+                <div class="underline">
+                    <p class="lead">Technologies I use</p>
+                </div>
+                <ul class="skills-frequency">
+                    <li
+                        :class="{ active: currentSkillList == 'allTheTime' }"
+                        @click="changeCurrentSkillList('allTheTime')"
+                    >
+                        All the time
+                    </li>
+                    <li
+                        :class="{ active: currentSkillList == 'sometimes' }"
+                        @click="changeCurrentSkillList('sometimes')"
+                    >
+                        Sometimes
+                    </li>
+                    <li
+                        :class="{ active: currentSkillList == 'learning' }"
+                        @click="changeCurrentSkillList('learning')"
+                    >
+                        Learning
+                    </li>
+                </ul>
+                <div class="skills-container">
+                    <Transition name="icon-fade" mode="out-in">
+                        <SkillsList
+                            :skill-list="skillList"
+                            :key="currentSkillList"
+                        />
+                    </Transition>
+                </div>
+            </div>
+        </div>
+        <div class="col-right">
+            <div class="profile-image-container">
+                <img
+                    class="profile-image"
+                    src="https://via.placeholder.com/200x300"
+                />
             </div>
         </div>
     </div>
@@ -124,28 +134,56 @@ export default {
 @import '@/assets/variables.scss';
 
 .container {
-    width: 80%;
+    width: 90%;
     margin: 40px auto;
     display: flex;
-    flex-direction: column;
     padding: 20px;
     border-radius: 5px;
 
+    .col-left {
+        flex: 2;
+    }
+
+    .col-right {
+        flex: 1;
+        display: flex;
+        place-items: center;
+    }
+
+    .profile-image-container {
+        display: flex;
+        place-items: center;
+        justify-content: space-around;
+        flex-grow: 1;
+
+        .profile-image {
+            border-radius: 15px;
+            border: solid 5px $color-dark;
+            box-shadow: 10px 10px 0px 0px $color-orange;
+            transition: 0.25s;
+
+            &:hover {
+                box-shadow: 15px 15px 0px 0px $color-orange;
+                transform: translate(-5px, -5px);
+                transform: rotate(2deg);
+            }
+        }
+    }
+
     .fancy-header {
-        border-bottom: 2px solid #264653;
+        border-bottom: 2px solid $color-dark;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
-        background: #f4a261;
+        background: $color-orange;
         padding: 0 20px;
         margin-top: 30px;
         height: 48px;
-        width: 60%;
+        width: 100%;
 
         h1 {
-            font-family: 'Fascinate', cursive;
-            font-weight: $font-weight-bold;
+            @include font-display;
             font-size: 58px;
-            color: #264653;
+            color: $color-dark;
             position: relative;
             top: -40px;
             left: 0;
@@ -163,8 +201,7 @@ export default {
 
         p {
             font-size: 36px;
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: $font-weight-bold;
+            @include font-serif-bold;
             position: relative;
             top: -30px;
         }
@@ -174,7 +211,7 @@ export default {
         margin-top: 40px;
         display: flex;
         flex-direction: column;
-        width: 60%;
+        width: 100%;
 
         .underline {
             border-bottom: solid 2px;
@@ -191,21 +228,27 @@ export default {
             padding-top: 10px;
 
             li {
+                @include font-serif-bold;
                 display: inline;
                 margin-right: 10px;
                 padding: 0 10px;
-                font-family: 'Cormorant Garamond', serif;
-                font-weight: $font-weight-bold;
                 font-size: 24px;
-                height: 30px;
+                height: 35px;
+                padding-bottom: 10px;
+                margin-bottom: -2px;
+                background-image: linear-gradient($color-orange 0 0);
+                background-size: 200% 10px;
+                background-position: 200% 100%;
+                background-repeat: no-repeat;
+                transition: 0.25s;
 
                 &:hover {
                     cursor: pointer;
-                    text-decoration: underline;
+                    background-position: 100% 100%;
                 }
 
                 &.active {
-                    background: #f4a261;
+                    background-size: 100% 100%;
                     border-top-left-radius: 5px;
                     border-top-right-radius: 5px;
                 }
@@ -213,7 +256,7 @@ export default {
         }
 
         .skills-container {
-            background: #f4a261;
+            background: $color-orange;
             border-bottom: solid 2px;
             border-top-right-radius: 5px;
             position: relative;
@@ -232,8 +275,8 @@ export default {
                     height: auto;
                     padding: 10px;
                     border-radius: 10px;
-                    background: #264653;
-                    color: #e9c46a;
+                    background: $color-dark;
+                    color: $color-gold;
                     text-align: center;
                     display: block;
                     opacity: 0;
@@ -275,8 +318,7 @@ export default {
 
     p.lead {
         font-size: 36px;
-        font-family: 'Cormorant Garamond', serif;
-        font-weight: $font-weight-bold;
+        @include font-serif-bold;
     }
 }
 </style>

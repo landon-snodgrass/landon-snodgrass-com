@@ -1,3 +1,26 @@
 $font-weight-light: 300;
 $font-weight-normal: 500;
 $font-weight-bold: 700;
+
+$color-gold: #e9c46a;
+$color-dark: #264653;
+$color-orange: #f4a261;
+$color-secondary-dark: #2a9d8f;
+
+$font-serif: 'Cormorant Garamond', serif;
+$font-display: 'Fascinate', cursive;
+
+@mixin font-serif-bold() {
+    font-family: $font-serif;
+    font-weight: $font-weight-bold;
+}
+
+@mixin font-serif-light() {
+    font-family: $font-serif;
+    font-weight: $font-weight-normal;
+}
+
+@mixin font-display() {
+    font-family: $font-display;
+    font-weight: $font-weight-bold;
+}

@@ -75,13 +75,15 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/variables.scss';
+
 .sidenav-container {
     display: flex;
     place-items: center;
 
     .sidenav {
-        background: #264653;
-        color: #264653;
+        background: $color-dark;
+        color: $color-dark;
         font-size: 24px;
         display: block;
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.16),
@@ -90,7 +92,7 @@ export default {
 
         .expander {
             position: absolute;
-            background: #264653;
+            background: $color-dark;
             top: 0;
             bottom: 0;
             left: 100%;
@@ -116,10 +118,10 @@ export default {
                 place-items: center;
 
                 a {
-                    color: #2a9d8f;
+                    color: $color-secondary-dark;
 
                     &.router-link-active {
-                        color: #e9c46a;
+                        color: $color-gold;
                     }
 
                     i {
@@ -141,7 +143,7 @@ export default {
                         z-index: 2;
                         text-decoration: none;
                         top: 0;
-                        font-family: 'Cormorant Garamond', serif;
+                        @include font-serif-bold;
                     }
                 }
             }
@@ -161,7 +163,7 @@ export default {
                     }
 
                     &:hover {
-                        color: #e9c46a;
+                        color: $color-gold;
                     }
                 }
             }
