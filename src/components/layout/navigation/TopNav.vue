@@ -1,9 +1,3 @@
-<script>
-export default {
-    data() {},
-};
-</script>
-
 <template>
     <nav>
         <a href="#">
@@ -51,6 +45,7 @@ nav {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     position: relative;
     z-index: 1;
+    max-width: 100vw;
 
     a {
         margin: 20px;

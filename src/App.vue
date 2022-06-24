@@ -2,12 +2,13 @@
 import { RouterView } from 'vue-router';
 import SideNav from './components/layout/navigation/SideNav.vue';
 import TopNav from './components/layout/navigation/TopNav.vue';
+import Footer from './components/layout/Footer.vue';
 </script>
 
 <template>
-    <TopNav />
+    <TopNav ref="topNav" />
     <div class="main-content">
-        <SideNav />
+        <SideNav :scrollActive="scrollActive" />
         <main>
             <RouterView v-slot="{ Component, route }">
                 <Transition name="fade">
@@ -18,6 +19,7 @@ import TopNav from './components/layout/navigation/TopNav.vue';
             </RouterView>
         </main>
     </div>
+    <Footer />
 </template>
 
 <style lang="scss">
@@ -87,7 +89,7 @@ import TopNav from './components/layout/navigation/TopNav.vue';
 }
 
 #app {
-    width: 100vw;
+    max-width: 100vw;
     height: 100vh;
     font-weight: normal;
     display: flex;
@@ -96,6 +98,7 @@ import TopNav from './components/layout/navigation/TopNav.vue';
     .main-content {
         display: flex;
         flex: 1;
+        max-width: 100vw;
 
         main {
             flex: 1;

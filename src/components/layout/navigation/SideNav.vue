@@ -1,5 +1,6 @@
 <script>
 export default {
+    props: ['scrollActive'],
     data() {
         return {
             isHovered: false,
@@ -89,6 +90,13 @@ export default {
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.16),
             3px 3px 3px rgba(0, 0, 0, 0.23);
         margin-left: -3px;
+
+        &.scoll-active {
+            position: sticky;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
 
         .expander {
             position: absolute;

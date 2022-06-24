@@ -19,6 +19,8 @@ import {
     faPython,
     faNodeJs,
     faJsSquare,
+    faGithub,
+    faLinkedin,
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -36,7 +38,9 @@ library.add(
     faJsSquare,
     faFileLines,
     faDatabase,
-    faCode
+    faCode,
+    faGithub,
+    faLinkedin
 );
 
 const app = createApp(App);
