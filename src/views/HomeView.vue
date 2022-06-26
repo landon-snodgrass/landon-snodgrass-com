@@ -85,14 +85,14 @@ export default {
             <div class="fancy-subtitle">
                 <p class="lead">I'm a front-end engineer living in Seattle.</p>
             </div>
-            <div class="blurb">
-                <h2>Me in a few sentences</h2>
-                <p>
+            <blurb>
+                <template #header>Me in a few sentences</template>
+                <template #default>
                     I'm incredibly passionate about equity and accessibility. I
                     love to learn and am constantly growing and challenging
                     myself. Tech evolves fast, I'm excited to evolve with it.
-                </p>
-            </div>
+                </template>
+            </blurb>
             <div class="skills">
                 <div class="underline">
                     <p class="lead">Technologies I use</p>
@@ -176,38 +176,6 @@ export default {
                 transform: rotate(2deg);
                 cursor: pointer;
             }
-        }
-    }
-
-    .blurb {
-        margin-left: 30px;
-        margin-top: 40px;
-        color: #fff;
-
-        h2 {
-            border: solid 5px $color-dark;
-            border-bottom: none;
-            padding: 10px;
-            font-size: 28px;
-            @include font-display;
-            background: $color-dark;
-            line-height: 80%;
-            display: inline-block;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-        }
-
-        p {
-            background: $color-secondary-dark;
-            @include font-serif-bold;
-            font-size: 24px;
-            padding: 5px 20px;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
-            border-top-right-radius: 5px;
-            border: solid 5px $color-dark;
-            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.16),
-                3px 3px 3px rgba(0, 0, 0, 0.23);
         }
     }
 

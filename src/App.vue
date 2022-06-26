@@ -27,6 +27,24 @@ import Footer from './components/layout/Footer.vue';
 @import '@/assets/variables.scss';
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;700&family=Fascinate&family=Mulish:wght@500;700&display=swap');
 
+.vue-universal-modal {
+    z-index: 3;
+
+    .modal {
+        padding: 30px;
+        max-width: 1030px;
+        max-height: 415px;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-radius: 10px;
+        border: solid 5px $color-orange;
+        font-size: 20px;
+        text-align: center;
+        transition: all 0.25s;
+        overflow: hidden;
+    }
+}
+
 .fade-enter-active {
     transition: all 2s ease-in;
     .container {
