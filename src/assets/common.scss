@@ -1,0 +1,70 @@
+@import '@/assets/variables.scss';
+
+a {
+    color: inherit;
+
+    span.tooltip {
+        text-decoration: none;
+    }
+}
+
+span.tooltip {
+    @include font-serif-bold;
+    text-decoration: underline dotted;
+    cursor: pointer;
+
+    &:before {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+        white-space: nowrap;
+        height: auto;
+        padding: 10px;
+        border-radius: 10px;
+        background: $color-dark;
+        color: $color-gold;
+        font-size: 18px;
+        text-align: center;
+        display: block;
+        opacity: 0;
+        transition: all 0.25s ease;
+        pointer-events: none;
+    }
+
+    &:hover:before {
+        display: block;
+        opacity: 1;
+        transform: translate(-50%, -100%);
+    }
+}
+
+.main-button {
+    font-size: 24px;
+    color: #fff;
+    @include font-serif-bold;
+    padding: 5px 15px;
+    background: $color-secondary-dark;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    margin: 20px 0 0 0;
+    box-shadow: 3px 3px 0px 0px $color-dark;
+    transition: 0.25s;
+
+    &:hover {
+        box-shadow: 5px 5px 0px 0px $color-dark;
+        transform: translate(-2px, -2px);
+        cursor: pointer;
+    }
+}
+
+.more-info {
+    display: block;
+    font-size: 18px;
+    position: relative;
+    top: 30px;
+    text-decoration: underline dotted;
+}
