@@ -1,53 +1,131 @@
 <script>
 export default {
+    props: ['width'],
     data() {
         return {
-            workEntries: {
-                swiftpageInternship: {
+            workEntries: [
+                {
+                    slug: 'swiftpage-internship',
                     startDate: '05/18',
                     company: 'Swiftpage (Now ACT LLC)',
                     position: 'Web Development Intern',
                     description:
                         'I started my career with an internship at Swiftpage. I was hired to build React.js components for a new headless WordPress site that would replace their product site. I also redesigned the company site myself and worked heavily in the CMS Sitefinity.',
                 },
-                swiftpageFulltime: {
+                {
+                    slug: 'swiftpage-fulltime',
                     startDate: '04/19',
                     company: 'Swiftpage (Now ACT LLC)',
                     position: 'Web Developer',
                     description:
                         'After a little under a year as an intern at Swiftpage, I was promoted to a full-time employee. I worked as the sole web developer (the old web developer left) maintaining the product and company sites. I worked heavily with the graphic designer to create seamless web experiences for users both internal and external.',
                 },
-                gryphon: {
+                {
+                    slug: 'gryphon',
                     startDate: '01/20',
                     company: 'Gryphon LLC',
                     position: 'Developer I',
                     description:
                         'At Gryphon, I worked heavily with our clients to help design their sites. My biggest project was working on the redesign of the AirForce site (af.mil). This position was much more team focused than my previous roles. We followed an Agile workflow and interacted with the client on a daily basis.',
                 },
-                milestone: {
+                {
+                    slug: 'milestone',
                     startDate: '11/21',
                     company: 'Milestone - On Contract With Google',
-                    positon: 'Front-end Engineer',
+                    position: 'Front-end Engineer',
                     description:
                         "Milestone brought me on to fulfill a front-end engineering position with Google. I worked on the Applied Digital Skills app in Google's education sector. It was an incredible learning experience not only for my front-end skills but for my vision of products. Google's investment in UI/UX is inspiring and it shows in their products.",
                 },
-            },
+            ],
+            currentProgress: -1,
+            currentChecked: [],
         };
+    },
+    methods: {
+        progressTimeline(index) {
+            this.currentProgress = index;
+            // this.currentChecked = [];
+            // for (let i = 0; i <= this.currentProgress; i++) {
+            //     console.log('is this running?');
+            //     this.currentChecked.push('dot-' + i);
+            // }
+            console.log(this.currentChecked);
+        },
+    },
+    computed: {
+        dotWidth() {
+            return 25;
+        },
+        entryWidth() {
+            // Adding 1 because of offset for start and end
+            const numOfEntries = this.workEntries.length;
+            return this.width / numOfEntries;
+        },
+        lineWidth() {
+            return this.entryWidth - this.dotWidth;
+        },
+        startEndWidth() {
+            return this.entryWidth / 2;
+        },
+        timelineStarted() {
+            return this.currentProgress >= 0;
+        },
+        baseCss() {
+            return {
+                '--dot-width': this.dotWidth + 'px',
+                '--entry-width': this.entryWidth + 'px',
+                '--line-width': this.lineWidth + 'px',
+                '--start-end-width': this.startEndWidth + 'px',
+                width: this.width + 'px',
+                paddingRight: this.dotWidth + 'px',
+            };
+        },
     },
 };
 </script>
 
 <template>
-    <!-- THE CHALLENGE: -->
-    <!-- 1. recreate version 3 (https://codepen.io/cjl750/pen/mXbMyo) with no javascript whatsoever
-     2. make code as abstract as possible (e.g., trying to calc positions that would work with any number of dots instead of hard-coding the container width as we do in our media queries)
-     3. highest browser support possible -->
-    <!-- Bonus points: turn v3's pseudo content into actual element content, so it's accessible to screen readers, search engines, etc. -->
+    <h1>{{ currentChecked }}</h1>
+    <div class="timeline" :style="baseCss">
+        <div class="timeline-container">
+            <div class="timeline-start">
+                <progress
+                    class="timeline-line"
+                    max="100"
+                    :value="timelineStarted ? 100 : 0"
+                ></progress>
+            </div>
+            <div
+                class="entry-container"
+                v-for="(entry, index) in workEntries"
+                :key="index"
+            >
+                <progress
+                    class="timeline-line"
+                    max="100"
+                    :value="currentProgress >= index ? 100 : 0"
+                    v-if="index > 0"
+                    :style="{ width: lineWidth }"
+                ></progress>
+                <input
+                    type="radio"
+                    class="timeline-dot"
+                    :class="{ active: currentProgress >= index }"
+                    :value="index"
+                    :id="'dot-' + index"
+                    :data-entry="index"
+                    v-model="currentProgress"
+                />
 
-    <h1>Notable inventions, <span>1910–2000</span></h1>
-    <div class="flex-parent">
-        <div class="input-flex-container">
-            <input type="radio" name="timeline-dot" data-description="1910" />
+                <!-- <div class="dot-info" :data-description="entry.startDate">
+                    <span class="year">{{ entry.startDate }}</span>
+                    <span class="label">{{ entry.position }}</span>
+                </div> -->
+            </div>
+            <div class="timeline-end">
+                <progress class="timeline-line" max="100" value="0"></progress>
+            </div>
+            <!-- <input type="radio" name="timeline-dot" data-description="1910" />
             <div class="dot-info" data-description="1910">
                 <span class="year">1910</span>
                 <span class="label">headset</span>
@@ -101,8 +179,8 @@ export default {
             <div class="dot-info" data-description="2000">
                 <span class="year">2000</span>
                 <span class="label">Google AdWords</span>
-            </div>
-            <div id="timeline-descriptions-wrapper">
+            </div> -->
+            <!-- <div id="timeline-descriptions-wrapper">
                 <p data-description="1910">
                     And future Call of Duty players would thank them.
                 </p>
@@ -125,7 +203,7 @@ export default {
                 <p data-description="2000">
                     Because organic search rankings take work.
                 </p>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -139,129 +217,61 @@ $dotWidth: 25px;
 $active: #2c3e50;
 $inactive: #aeb6bf;
 
-.flex-parent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    min-height: 500px;
-}
+.timeline {
+    .timeline-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
 
-.input-flex-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    width: $parentWidth;
-    max-width: $parentMaxWidth;
-    position: relative;
-    z-index: 0;
-    margin-left: calc((#{$parentWidth} - #{$dotWidth}) / $numDots);
-}
-
-input {
-    width: $dotWidth;
-    height: $dotWidth;
-    background-color: $active;
-    position: relative;
-    border-radius: 50%;
-    display: block;
-    appearance: none;
-    cursor: pointer;
-    &:focus {
-        outline: none;
-    }
-    &:before,
-    &:after {
-        content: '';
-        display: block;
-        position: absolute;
-        z-index: -1;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: $active;
-        width: calc(#{$parentWidth} / #{$numDots});
-        height: 5px;
-        max-width: calc(#{$parentMaxWidth} / #{$numDots});
-    }
-
-    &:before {
-        left: calc((-#{$parentWidth} / #{$numDots}) + ($dotWidth / 2));
-    }
-
-    &:after {
-        right: calc((-#{$parentWidth} / #{$numDots}) + ($dotWidth / 2));
-    }
-
-    &:checked {
-        background-color: $active;
-
-        &:before {
+        .timeline-line {
+            height: calc(var(--dot-width) / 5);
+            width: calc(var(--line-width));
+            max-width: 100%;
+            display: block;
             background-color: $active;
-        }
 
-        &:after {
+            &::-webkit-progress-bar {
+                background-color: $inactive;
+            }
+
+            &::-webkit-progress-value {
+                background-color: $active;
+                transition: 0.3s;
+            }
+        }
+    }
+
+    .timeline-start,
+    .timeline-end {
+        width: var(--start-end-width);
+
+        & ~ .entry-container {
+            justify-content: flex-end;
+        }
+    }
+
+    .entry-container {
+        display: flex;
+        align-items: center;
+
+        .timeline-dot {
+            width: var(--dot-width);
+            height: var(--dot-width);
             background-color: $inactive;
+            position: relative;
+            border-radius: 50%;
+            display: block;
+            appearance: none;
+            cursor: pointer;
+
+            &:focus {
+                outline: none;
+            }
+
+            &.active {
+                background-color: $active;
+            }
         }
-    }
-
-    &:checked ~ input {
-        &,
-        &:before,
-        &:after {
-            background-color: $inactive;
-        }
-    }
-
-    &:checked + .dot-info {
-        span {
-            font-size: 13px;
-            font-weight: bold;
-        }
-    }
-}
-
-.dot-info {
-    width: $dotWidth;
-    height: $dotWidth;
-    display: block;
-    visibility: hidden;
-    position: relative;
-    z-index: -1;
-    left: calc((((#{$parentWidth} - #{$dotWidth}) / $numDots) * -1) - 1px);
-
-    span {
-        visibility: visible;
-        position: absolute;
-        font-size: 12px;
-        &.year {
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        &.label {
-            top: -65px;
-            left: 0;
-            transform: rotateZ(-45deg);
-            width: 70px;
-            text-indent: -10px;
-        }
-    }
-}
-
-#timeline-descriptions-wrapper {
-    width: 100%;
-    margin-top: 140px;
-    font-size: 22px;
-    font-weight: 400;
-    margin-left: calc((-#{$parentWidth} - #{$dotWidth}) / $numDots);
-
-    p {
-        margin-top: 0;
-        display: none;
     }
 }
 </style>

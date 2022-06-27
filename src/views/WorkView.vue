@@ -10,6 +10,14 @@ export default {
 
 <template>
     <div class="work-container">
-        <work-timeline></work-timeline>
+        <work-timeline width="1200"></work-timeline>
     </div>
 </template>
+
+<style lang="scss">
+.work-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+</style>
