@@ -33,6 +33,8 @@ const seattleFetchUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${s
 var weatherData = {};
 
 async function getWeatherData() {
+    console.log('Getting weather data');
+    console.log(new Date().toString());
     try {
         const [phoenixResponse, seattleResponse] = await Promise.all([
             axios.get(phoenixFetchUrl),
@@ -47,9 +49,7 @@ async function getWeatherData() {
             phoenix: phoenixResponse.data.current,
             seattle: seattleResponse.data.current,
         };
-        console.log(weatherData);
     } catch (err) {
-        console.log(err);
         weatherData = {
             error: err,
             status: 500,
