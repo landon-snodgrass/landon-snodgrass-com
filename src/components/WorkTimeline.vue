@@ -40,30 +40,70 @@ export default {
                 },
             ],
             currentSpot: -1,
-            animOffset: 0,
-            currentProgress: 0,
+            currentProgress: -100,
+            active: [],
         };
     },
-    methods: {},
+    methods: {
+        setActiveForward(index) {
+            console.log(index);
+            for (let i = index + 1; i < this.workEntries.length; i++) {
+                this.active[i] = false;
+            }
+            this.active[index] = true;
+        },
+        setActiveBackward(index) {
+            console.log(index, ' started');
+        },
+        getArrowPlacementAt(spot) {
+            return spot * this.entryWidth + this.startEndWidth - this.dotWidth;
+        },
+    },
     watch: {
         currentSpot(newVal, oldVal) {
-            const change = newVal - oldVal;
-            const dir = Math.sign(change);
+            const lineTimeline = gsap.timeline();
+            const tweenObj = { val: this.currentProgress };
 
-            var lineTimeline = gsap.timeline();
-
-            for (let i = 0, c = oldVal; i <= Math.abs(change); i++, c += dir) {
-                if (dir > 0) {
-                    lineTimeline.to('#line-' + c, {
-                        value: 100,
-                        duration: 0.25,
-                    });
-                } else {
-                    lineTimeline.to('#line-' + c, { value: 0, duration: 0.25 });
+            lineTimeline.fromTo(
+                '.entry-data-container',
+                {
+                    transformOrigin:
+                        this.getArrowPlacementAt(oldVal) + 'px 110%',
+                    duration: 0,
+                },
+                {
+                    scale: 0,
+                    duration: 0.1,
+                    ease: 'Power3.out',
                 }
-            }
+            );
 
-            lineTimeline.start();
+            lineTimeline.to('.entry-data-container .arrow', {
+                left: this.getArrowPlacementAt(newVal),
+            });
+
+            lineTimeline.to(tweenObj, {
+                val: this.currentSpot * 100,
+                duration: 0.2,
+                ease: 'Power3.out',
+                onUpdate: () => {
+                    this.currentProgress = tweenObj.val;
+                },
+            });
+
+            lineTimeline.fromTo(
+                '.entry-data-container',
+                {
+                    transformOrigin:
+                        this.getArrowPlacementAt(newVal) + 'px 110%',
+                    duration: 0,
+                },
+                {
+                    scale: 1,
+                    duration: 0.4,
+                    ease: 'elastic.out(1, 0.9)',
+                }
+            );
         },
     },
     computed: {
@@ -81,8 +121,17 @@ export default {
         startEndWidth() {
             return this.entryWidth / 2;
         },
-        timelineStarted() {
-            return this.currentProgress >= 0;
+        arrowPlacement() {
+            return (
+                this.currentSpot * this.entryWidth +
+                this.startEndWidth -
+                this.dotWidth
+            );
+        },
+        currentEntry() {
+            return this.currentSpot >= 0
+                ? this.workEntries[this.currentSpot]
+                : {};
         },
         baseCss() {
             return {
@@ -90,6 +139,8 @@ export default {
                 '--entry-width': this.entryWidth + 'px',
                 '--line-width': this.lineWidth + 'px',
                 '--start-end-width': this.startEndWidth + 'px',
+                '--total-width': this.width + 'px',
+                '--top-padding': '120px',
                 width: this.width + 'px',
                 paddingRight: this.dotWidth + 'px',
             };
@@ -99,14 +150,28 @@ export default {
 </script>
 
 <template>
-    <h1>{{ currentProgress }}</h1>
     <div class="timeline" :style="baseCss">
+        <div class="entry-data-container">
+            <div class="text-container">
+                <p class="company">
+                    {{ currentEntry.company }} |
+                    {{ currentEntry.startDate }}
+                </p>
+                <p class="position">
+                    {{ currentEntry.position }}
+                </p>
+                <p class="description">
+                    {{ currentEntry.description }}
+                </p>
+            </div>
+            <div class="arrow"></div>
+        </div>
         <div class="timeline-container">
             <div class="timeline-start">
                 <progress
                     class="timeline-line"
                     max="100"
-                    :value="timelineStarted ? 100 : 0"
+                    :value="currentProgress + 100"
                 ></progress>
             </div>
             <div
@@ -114,113 +179,32 @@ export default {
                 v-for="(entry, index) in workEntries"
                 :key="index"
             >
-                <progress
-                    class="timeline-line"
-                    :id="'line-' + index"
-                    max="100"
-                    value="0"
-                    v-if="index > 0"
-                    :style="{
-                        width: lineWidth,
-                    }"
-                ></progress>
-                <input
-                    type="radio"
-                    class="timeline-dot"
-                    :class="{ active: currentSpot >= index }"
-                    :value="index"
-                    :id="'dot-' + index"
-                    :data-entry="index"
-                    v-model="currentSpot"
-                />
-
-                <!-- <div class="dot-info" :data-description="entry.startDate">
-                    <span class="year">{{ entry.startDate }}</span>
-                    <span class="label">{{ entry.position }}</span>
-                </div> -->
+                <div class="entry-line-container">
+                    <progress
+                        class="timeline-line"
+                        :id="'line-' + index"
+                        max="100"
+                        min="0"
+                        :value="currentProgress - 100 * (index - 1)"
+                        v-if="index > 0"
+                        :style="{
+                            width: lineWidth,
+                        }"
+                    ></progress>
+                    <input
+                        type="radio"
+                        class="timeline-dot"
+                        :class="{ active: currentProgress >= index * 100 }"
+                        :value="index"
+                        :id="'dot-' + index"
+                        :data-entry="index"
+                        v-model="currentSpot"
+                    />
+                </div>
             </div>
             <div class="timeline-end">
                 <progress class="timeline-line" max="100" value="0"></progress>
             </div>
-            <!-- <input type="radio" name="timeline-dot" data-description="1910" />
-            <div class="dot-info" data-description="1910">
-                <span class="year">1910</span>
-                <span class="label">headset</span>
-            </div>
-            <input type="radio" name="timeline-dot" data-description="1920" />
-            <div class="dot-info" data-description="1920">
-                <span class="year">1920</span>
-                <span class="label">jungle gym</span>
-            </div>
-            <input
-                type="radio"
-                name="timeline-dot"
-                data-description="1930"
-                checked
-            />
-            <div class="dot-info" data-description="1930">
-                <span class="year">1930</span>
-                <span class="label">chocolate chip cookie</span>
-            </div>
-            <input type="radio" name="timeline-dot" data-description="1940" />
-            <div class="dot-info" data-description="1940">
-                <span class="year">1940</span>
-                <span class="label">Jeep</span>
-            </div>
-            <input type="radio" name="timeline-dot" data-description="1950" />
-            <div class="dot-info" data-description="1950">
-                <span class="year">1950</span>
-                <span class="label">leaf blower</span>
-            </div>
-            <input type="radio" name="timeline-dot" data-description="1960" />
-            <div class="dot-info" data-description="1960">
-                <span class="year">1960</span>
-                <span class="label">magnetic stripe card</span>
-            </div>
-            <input type="radio" name="timeline-dot" data-description="1970" />
-            <div class="dot-info" data-description="1970">
-                <span class="year">1970</span>
-                <span class="label">wireless LAN</span>
-            </div>
-            <input type="radio" name="timeline-dot" data-description="1980" />
-            <div class="dot-info" data-description="1980">
-                <span class="year">1980</span>
-                <span class="label">flash memory</span>
-            </div>
-            <input type="radio" name="timeline-dot" data-description="1990" />
-            <div class="dot-info" data-description="1990">
-                <span class="year">1990</span>
-                <span class="label">World Wide Web</span>
-            </div>
-            <input type="radio" name="timeline-dot" data-description="2000" />
-            <div class="dot-info" data-description="2000">
-                <span class="year">2000</span>
-                <span class="label">Google AdWords</span>
-            </div> -->
-            <!-- <div id="timeline-descriptions-wrapper">
-                <p data-description="1910">
-                    And future Call of Duty players would thank them.
-                </p>
-                <p data-description="1920">
-                    Because every kid should get to be Tarzan for a day.
-                </p>
-                <p data-description="1930">And the world rejoiced.</p>
-                <p data-description="1940">
-                    Because building roads is inconvenient.
-                </p>
-                <p data-description="1950">Ain’t nobody got time to rake.</p>
-                <p data-description="1960">
-                    Because paper currency is for noobs.
-                </p>
-                <p data-description="1970">Nobody likes cords. Nobody.</p>
-                <p data-description="1980">Brighter than glow memory.</p>
-                <p data-description="1990">
-                    To capitalize on an as-yet nascent market for cat photos.
-                </p>
-                <p data-description="2000">
-                    Because organic search rankings take work.
-                </p>
-            </div> -->
         </div>
     </div>
 </template>
@@ -235,6 +219,27 @@ $active: #2c3e50;
 $inactive: #aeb6bf;
 
 .timeline {
+    display: flex;
+    flex-direction: column;
+
+    .entry-data-container {
+        background: $active;
+        border-radius: 5px;
+        color: #fff;
+        padding: 20px;
+        margin-bottom: 30px;
+
+        .arrow {
+            position: absolute;
+            bottom: -25px;
+            border-top: solid 25px $active;
+            border-right: solid calc($dotWidth / 2) transparent;
+            border-left: solid calc($dotWidth / 2) transparent;
+            height: $dotWidth;
+            width: $dotWidth;
+        }
+    }
+
     .timeline-container {
         display: flex;
         justify-content: space-around;
@@ -261,6 +266,9 @@ $inactive: #aeb6bf;
     .timeline-start,
     .timeline-end {
         width: var(--start-end-width);
+        align-self: flex-end;
+        margin-bottom: calc($dotWidth / 2);
+        transform: translateY(50%);
 
         & ~ .entry-container {
             justify-content: flex-end;
@@ -269,24 +277,50 @@ $inactive: #aeb6bf;
 
     .entry-container {
         display: flex;
-        align-items: center;
+        position: static;
+        flex-direction: column;
+        justify-content: center;
 
-        .timeline-dot {
-            width: var(--dot-width);
-            height: var(--dot-width);
-            background-color: $inactive;
-            position: relative;
-            border-radius: 50%;
-            display: block;
-            appearance: none;
-            cursor: pointer;
+        .entry-data-container {
+            display: flex;
+            justify-content: flex-end;
+            position: static;
 
-            &:focus {
-                outline: none;
+            .text-container {
+                position: absolute;
+                width: var(--total-width);
+                left: 0;
+                bottom: 50px;
+                background: $active;
+                color: #fff;
+                padding: 0px;
+                border-radius: 5px;
+                display: none;
+                height: 0px;
             }
+        }
 
-            &.active {
-                background-color: $active;
+        .entry-line-container {
+            display: flex;
+            align-items: center;
+
+            .timeline-dot {
+                width: var(--dot-width);
+                height: var(--dot-width);
+                background-color: $inactive;
+                position: relative;
+                border-radius: 50%;
+                display: block;
+                appearance: none;
+                cursor: pointer;
+
+                &:focus {
+                    outline: none;
+                }
+
+                &.active {
+                    background-color: $active;
+                }
             }
         }
     }
