@@ -13,7 +13,7 @@
         "@fortawesome/free-brands-svg-icons": "^6.1.1",
         "@fortawesome/free-solid-svg-icons": "^6.1.1",
         "@fortawesome/vue-fontawesome": "^3.0.0-4",
-        "@tweenjs/tween.js": "^18.6.4",
+        "gsap": "^3.10.4",
         "sass": "^1.52.3",
         "vue": "^3.2.36",
         "vue-router": "^4.0.15",

@@ -1,4 +1,6 @@
 <script>
+import { gsap } from 'gsap';
+
 export default {
     props: ['width'],
     data() {
@@ -39,31 +41,29 @@ export default {
             ],
             currentSpot: -1,
             animOffset: 0,
+            currentProgress: 0,
         };
     },
-    methods: {
-        tween(start, end) {
-            let frameHandler;
-
-            const animate = function (currentTime) {
-                TWEEN.update(currentTime);
-                frameHandler = requestAnimationFrame(animate);
-            };
-
-            const myTween = new TWEEN.Tween({ tweeningValue: start })
-                .to({ tweeningValue: end }, this.tweenDuration)
-                .onComplete(() => {
-                    cancelAnimationFrame(frameHandler);
-                })
-                .start();
-
-            frameHandler = requestAnimationFrame(animate);
-        },
-    },
+    methods: {},
     watch: {
-        currentProgress(newVal, oldVal) {
-            this.tweenDuration = Math.abs(newVal - oldVal) * 150;
-            this.tween(oldVal, newVal);
+        currentSpot(newVal, oldVal) {
+            const change = newVal - oldVal;
+            const dir = Math.sign(change);
+
+            var lineTimeline = gsap.timeline();
+
+            for (let i = 0, c = oldVal; i <= Math.abs(change); i++, c += dir) {
+                if (dir > 0) {
+                    lineTimeline.to('#line-' + c, {
+                        value: 100,
+                        duration: 0.25,
+                    });
+                } else {
+                    lineTimeline.to('#line-' + c, { value: 0, duration: 0.25 });
+                }
+            }
+
+            lineTimeline.start();
         },
     },
     computed: {
@@ -83,9 +83,6 @@ export default {
         },
         timelineStarted() {
             return this.currentProgress >= 0;
-        },
-        currentProgress() {
-            return this.currentSpot * 100;
         },
         baseCss() {
             return {
@@ -119,19 +116,18 @@ export default {
             >
                 <progress
                     class="timeline-line"
+                    :id="'line-' + index"
                     max="100"
-                    :value="currentProgress >= index ? 100 : 0"
+                    value="0"
                     v-if="index > 0"
                     :style="{
                         width: lineWidth,
-                        transitionDelay:
-                            (index - currentProgress - 1) * 0.25 + 's',
                     }"
                 ></progress>
                 <input
                     type="radio"
                     class="timeline-dot"
-                    :class="{ active: currentProgress >= index }"
+                    :class="{ active: currentSpot >= index }"
                     :value="index"
                     :id="'dot-' + index"
                     :data-entry="index"
@@ -257,7 +253,7 @@ $inactive: #aeb6bf;
 
             &::-webkit-progress-value {
                 background-color: $active;
-                transition: 0.3s;
+                //transition: 0.3s;
             }
         }
     }
