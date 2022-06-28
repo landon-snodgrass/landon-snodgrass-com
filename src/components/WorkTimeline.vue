@@ -37,19 +37,33 @@ export default {
                         "Milestone brought me on to fulfill a front-end engineering position with Google. I worked on the Applied Digital Skills app in Google's education sector. It was an incredible learning experience not only for my front-end skills but for my vision of products. Google's investment in UI/UX is inspiring and it shows in their products.",
                 },
             ],
-            currentProgress: -1,
-            currentChecked: [],
+            currentSpot: -1,
+            animOffset: 0,
         };
     },
     methods: {
-        progressTimeline(index) {
-            this.currentProgress = index;
-            // this.currentChecked = [];
-            // for (let i = 0; i <= this.currentProgress; i++) {
-            //     console.log('is this running?');
-            //     this.currentChecked.push('dot-' + i);
-            // }
-            console.log(this.currentChecked);
+        tween(start, end) {
+            let frameHandler;
+
+            const animate = function (currentTime) {
+                TWEEN.update(currentTime);
+                frameHandler = requestAnimationFrame(animate);
+            };
+
+            const myTween = new TWEEN.Tween({ tweeningValue: start })
+                .to({ tweeningValue: end }, this.tweenDuration)
+                .onComplete(() => {
+                    cancelAnimationFrame(frameHandler);
+                })
+                .start();
+
+            frameHandler = requestAnimationFrame(animate);
+        },
+    },
+    watch: {
+        currentProgress(newVal, oldVal) {
+            this.tweenDuration = Math.abs(newVal - oldVal) * 150;
+            this.tween(oldVal, newVal);
         },
     },
     computed: {
@@ -70,6 +84,9 @@ export default {
         timelineStarted() {
             return this.currentProgress >= 0;
         },
+        currentProgress() {
+            return this.currentSpot * 100;
+        },
         baseCss() {
             return {
                 '--dot-width': this.dotWidth + 'px',
@@ -85,7 +102,7 @@ export default {
 </script>
 
 <template>
-    <h1>{{ currentChecked }}</h1>
+    <h1>{{ currentProgress }}</h1>
     <div class="timeline" :style="baseCss">
         <div class="timeline-container">
             <div class="timeline-start">
@@ -105,7 +122,11 @@ export default {
                     max="100"
                     :value="currentProgress >= index ? 100 : 0"
                     v-if="index > 0"
-                    :style="{ width: lineWidth }"
+                    :style="{
+                        width: lineWidth,
+                        transitionDelay:
+                            (index - currentProgress - 1) * 0.25 + 's',
+                    }"
                 ></progress>
                 <input
                     type="radio"
@@ -114,7 +135,7 @@ export default {
                     :value="index"
                     :id="'dot-' + index"
                     :data-entry="index"
-                    v-model="currentProgress"
+                    v-model="currentSpot"
                 />
 
                 <!-- <div class="dot-info" :data-description="entry.startDate">
