@@ -8,7 +8,7 @@ export default {
             workEntries: [
                 {
                     slug: 'swiftpage-internship',
-                    startDate: '05/18',
+                    startDate: 'May 2018',
                     company: 'Swiftpage (Now ACT LLC)',
                     position: 'Web Development Intern',
                     description:
@@ -16,7 +16,7 @@ export default {
                 },
                 {
                     slug: 'swiftpage-fulltime',
-                    startDate: '04/19',
+                    startDate: 'April 2019',
                     company: 'Swiftpage (Now ACT LLC)',
                     position: 'Web Developer',
                     description:
@@ -24,7 +24,7 @@ export default {
                 },
                 {
                     slug: 'gryphon',
-                    startDate: '01/20',
+                    startDate: 'January 2020',
                     company: 'Gryphon LLC',
                     position: 'Developer I',
                     description:
@@ -32,7 +32,7 @@ export default {
                 },
                 {
                     slug: 'milestone',
-                    startDate: '11/21',
+                    startDate: 'Novemeber 2021',
                     company: 'Milestone - On Contract With Google',
                     position: 'Front-end Engineer',
                     description:
@@ -43,6 +43,9 @@ export default {
             currentProgress: -100,
             active: [],
         };
+    },
+    mounted() {
+        this.currentSpot = 0;
     },
     methods: {
         setActiveForward(index) {
@@ -64,14 +67,14 @@ export default {
                     this.startEndWidth -
                     this.dotWidth
             );
-            return (
+            const containerOffset =
                 (this.$refs.dataContainer.offsetParent.clientWidth -
                     this.$refs.dataContainer.offsetWidth) /
-                    2 -
-                spot * this.entryWidth +
-                this.startEndWidth -
-                this.dotWidth
-            );
+                2;
+            const dotOffset = this.dotWidth / 2;
+            const dotPosition = spot * this.entryWidth;
+            const lineOffset = this.startEndWidth;
+            return dotPosition + lineOffset - dotOffset - containerOffset;
         },
         next() {
             this.currentSpot = Math.min(
@@ -175,7 +178,11 @@ export default {
 <template>
     <div class="timeline" :style="baseCss">
         <div class="info-row">
-            <div class="prev" @click="prev">
+            <div
+                class="prev"
+                @click="prev"
+                :style="{ visibility: currentSpot > 0 ? 'visible' : 'hidden' }"
+            >
                 <span class="material-symbols-outlined"> arrow_back_ios </span>
                 <span class="material-symbols-outlined second">
                     keyboard_double_arrow_left
@@ -183,20 +190,25 @@ export default {
             </div>
             <div class="entry-data-container" ref="dataContainer">
                 <div class="text-container">
-                    <p class="company">
-                        {{ currentEntry.company }} |
-                        {{ currentEntry.startDate }}
-                    </p>
                     <p class="position">
-                        {{ currentEntry.position }}
+                        <span>{{ currentEntry.position }}</span>
+                        <span>{{ currentEntry.startDate }}</span>
                     </p>
+                    <p class="company">
+                        {{ currentEntry.company }}
+                    </p>
+                    <hr />
                     <p class="description">
                         {{ currentEntry.description }}
                     </p>
                 </div>
                 <div class="arrow"></div>
             </div>
-            <div class="next" @click="next">
+            <div
+                class="next"
+                @click="next"
+                :style="{ visibility: currentSpot < 3 ? 'visible' : 'hidden' }"
+            >
                 <span class="material-symbols-outlined second">
                     keyboard_double_arrow_right
                 </span>
@@ -317,12 +329,14 @@ $inactive: #aeb6bf;
             position: static;
             @include font-serif-bold;
 
-            .company {
+            .position {
                 font-size: 24px;
+                display: flex;
+                justify-content: space-between;
             }
 
-            .position {
-                font-size: 20px;
+            .company {
+                font-size: 18px;
             }
 
             .description {
