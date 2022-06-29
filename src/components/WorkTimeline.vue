@@ -56,7 +56,31 @@ export default {
             console.log(index, ' started');
         },
         getArrowPlacementAt(spot) {
-            return spot * this.entryWidth + this.startEndWidth - this.dotWidth;
+            console.log(
+                (this.$refs.dataContainer.offsetParent.clientWidth -
+                    this.$refs.dataContainer.offsetWidth) /
+                    2 -
+                    spot * this.entryWidth +
+                    this.startEndWidth -
+                    this.dotWidth
+            );
+            return (
+                (this.$refs.dataContainer.offsetParent.clientWidth -
+                    this.$refs.dataContainer.offsetWidth) /
+                    2 -
+                spot * this.entryWidth +
+                this.startEndWidth -
+                this.dotWidth
+            );
+        },
+        next() {
+            this.currentSpot = Math.min(
+                this.currentSpot + 1,
+                this.workEntries.length - 1
+            );
+        },
+        prev() {
+            this.currentSpot = Math.max(this.currentSpot - 1, 0);
         },
     },
     watch: {
@@ -72,7 +96,7 @@ export default {
                     duration: 0,
                 },
                 {
-                    scale: 0,
+                    transform: 'scale(0)',
                     duration: 0.1,
                     ease: 'Power3.out',
                 }
@@ -99,7 +123,7 @@ export default {
                     duration: 0,
                 },
                 {
-                    scale: 1,
+                    transform: 'scale(1)',
                     duration: 0.4,
                     ease: 'elastic.out(1, 0.9)',
                 }
@@ -131,7 +155,7 @@ export default {
         currentEntry() {
             return this.currentSpot >= 0
                 ? this.workEntries[this.currentSpot]
-                : {};
+                : this.workEntries[0];
         },
         baseCss() {
             return {
@@ -142,7 +166,6 @@ export default {
                 '--total-width': this.width + 'px',
                 '--top-padding': '120px',
                 width: this.width + 'px',
-                paddingRight: this.dotWidth + 'px',
             };
         },
     },
@@ -151,20 +174,36 @@ export default {
 
 <template>
     <div class="timeline" :style="baseCss">
-        <div class="entry-data-container">
-            <div class="text-container">
-                <p class="company">
-                    {{ currentEntry.company }} |
-                    {{ currentEntry.startDate }}
-                </p>
-                <p class="position">
-                    {{ currentEntry.position }}
-                </p>
-                <p class="description">
-                    {{ currentEntry.description }}
-                </p>
+        <div class="info-row">
+            <div class="prev" @click="prev">
+                <span class="material-symbols-outlined"> arrow_back_ios </span>
+                <span class="material-symbols-outlined second">
+                    keyboard_double_arrow_left
+                </span>
             </div>
-            <div class="arrow"></div>
+            <div class="entry-data-container" ref="dataContainer">
+                <div class="text-container">
+                    <p class="company">
+                        {{ currentEntry.company }} |
+                        {{ currentEntry.startDate }}
+                    </p>
+                    <p class="position">
+                        {{ currentEntry.position }}
+                    </p>
+                    <p class="description">
+                        {{ currentEntry.description }}
+                    </p>
+                </div>
+                <div class="arrow"></div>
+            </div>
+            <div class="next" @click="next">
+                <span class="material-symbols-outlined second">
+                    keyboard_double_arrow_right
+                </span>
+                <span class="material-symbols-outlined">
+                    arrow_forward_ios
+                </span>
+            </div>
         </div>
         <div class="timeline-container">
             <div class="timeline-start">
@@ -210,33 +249,95 @@ export default {
 </template>
 
 <style lang="scss">
+@import '@/assets/variables.scss';
+
 $numDots: 20;
 $parentWidthBase: 0.8;
 $parentWidth: $parentWidthBase * 100vw;
 $parentMaxWidth: 1000px;
 $dotWidth: 25px;
-$active: #2c3e50;
+$active: $color-dark;
 $inactive: #aeb6bf;
 
 .timeline {
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
+    height: 300px;
 
-    .entry-data-container {
-        background: $active;
-        border-radius: 5px;
-        color: #fff;
-        padding: 20px;
-        margin-bottom: 30px;
+    .info-row {
+        display: flex;
+        align-items: center;
+        position: static;
 
-        .arrow {
-            position: absolute;
-            bottom: -25px;
-            border-top: solid 25px $active;
-            border-right: solid calc($dotWidth / 2) transparent;
-            border-left: solid calc($dotWidth / 2) transparent;
-            height: $dotWidth;
-            width: $dotWidth;
+        .next,
+        .prev {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.25s;
+            cursor: pointer;
+
+            span {
+                transition: 0.25s;
+            }
+
+            .second {
+                font-size: 38px;
+                opacity: 0;
+                transition: 0.25s;
+            }
+
+            &:hover {
+                transform: translateX(-38px);
+
+                span {
+                    opacity: 0;
+                }
+
+                .second {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .next {
+            &:hover {
+                transform: translateX(38px);
+            }
+        }
+
+        .entry-data-container {
+            background: $active;
+            border-radius: 5px;
+            color: #fff;
+            padding: 20px;
+            margin: 0 15px 30px;
+            transform: scale(0);
+            position: static;
+            @include font-serif-bold;
+
+            .company {
+                font-size: 24px;
+            }
+
+            .position {
+                font-size: 20px;
+            }
+
+            .description {
+                font-size: 18px;
+            }
+
+            .arrow {
+                position: absolute;
+                bottom: -25px;
+                border-top: solid 25px $active;
+                border-right: solid calc($dotWidth / 2) transparent;
+                border-left: solid calc($dotWidth / 2) transparent;
+                height: $dotWidth;
+                width: $dotWidth;
+            }
         }
     }
 
