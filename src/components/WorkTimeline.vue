@@ -9,6 +9,7 @@ export default {
                 {
                     slug: 'swiftpage-internship',
                     startDate: 'May 2018',
+                    shortDate: '5/18',
                     company: 'Swiftpage (Now ACT LLC)',
                     position: 'Web Development Intern',
                     description:
@@ -17,6 +18,7 @@ export default {
                 {
                     slug: 'swiftpage-fulltime',
                     startDate: 'April 2019',
+                    shortDate: '4/19',
                     company: 'Swiftpage (Now ACT LLC)',
                     position: 'Web Developer',
                     description:
@@ -25,6 +27,7 @@ export default {
                 {
                     slug: 'gryphon',
                     startDate: 'January 2020',
+                    shortDate: '1/20',
                     company: 'Gryphon LLC',
                     position: 'Developer I',
                     description:
@@ -33,6 +36,7 @@ export default {
                 {
                     slug: 'milestone',
                     startDate: 'Novemeber 2021',
+                    shortDate: '11/21',
                     company: 'Milestone - On Contract With Google',
                     position: 'Front-end Engineer',
                     description:
@@ -42,10 +46,12 @@ export default {
             currentSpot: -1,
             currentProgress: -100,
             active: [],
+            datePlacements: [],
         };
     },
     mounted() {
         this.currentSpot = 0;
+        this.datePlacements = this.getDatePlacements();
     },
     methods: {
         setActiveForward(index) {
@@ -75,6 +81,16 @@ export default {
             const dotPosition = spot * this.entryWidth;
             const lineOffset = this.startEndWidth;
             return dotPosition + lineOffset - dotOffset - containerOffset;
+        },
+        getDatePlacements() {
+            let _datePlacements;
+            this.$refs.dotLabels.forEach((label, index) => {
+                const labelIndex = label.dataset.index;
+                const labelOffset = (label.clientWidth - this.dotWidth) / 2;
+                const labelStyle = { right: labelOffset + 'px' };
+                _datePlacements[labelIndex] = labelStyle;
+            });
+            return _datePlacements;
         },
         next() {
             this.currentSpot = Math.min(
@@ -251,6 +267,14 @@ export default {
                         :data-entry="index"
                         v-model="currentSpot"
                     />
+                    <label
+                        :for="'dot-' + index"
+                        :data-index="index"
+                        :style="datePlacements[index]"
+                        ref="dotLabels"
+                    >
+                        {{ entry.shortDate }}
+                    </label>
                 </div>
             </div>
             <div class="timeline-end">
@@ -436,6 +460,14 @@ $inactive: #aeb6bf;
                 &.active {
                     background-color: $active;
                 }
+            }
+
+            label {
+                position: absolute;
+                right: 0;
+                bottom: -30px;
+                font-size: 22px;
+                @include font-serif-bold;
             }
         }
     }
