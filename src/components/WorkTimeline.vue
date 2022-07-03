@@ -35,7 +35,7 @@ export default {
                 },
                 {
                     slug: 'milestone',
-                    startDate: 'Novemeber 2021',
+                    startDate: 'November 2021',
                     shortDate: '11/21',
                     company: 'Milestone - On Contract With Google',
                     position: 'Front-end Engineer',
@@ -55,24 +55,12 @@ export default {
     },
     methods: {
         setActiveForward(index) {
-            console.log(index);
             for (let i = index + 1; i < this.workEntries.length; i++) {
                 this.active[i] = false;
             }
             this.active[index] = true;
         },
-        setActiveBackward(index) {
-            console.log(index, ' started');
-        },
         getArrowPlacementAt(spot) {
-            console.log(
-                (this.$refs.dataContainer.offsetParent.clientWidth -
-                    this.$refs.dataContainer.offsetWidth) /
-                    2 -
-                    spot * this.entryWidth +
-                    this.startEndWidth -
-                    this.dotWidth
-            );
             const containerOffset =
                 (this.$refs.dataContainer.offsetParent.clientWidth -
                     this.$refs.dataContainer.offsetWidth) /
@@ -83,11 +71,11 @@ export default {
             return dotPosition + lineOffset - dotOffset - containerOffset;
         },
         getDatePlacements() {
-            let _datePlacements;
+            let _datePlacements = [];
             this.$refs.dotLabels.forEach((label, index) => {
                 const labelIndex = label.dataset.index;
                 const labelOffset = (label.clientWidth - this.dotWidth) / 2;
-                const labelStyle = { right: labelOffset + 'px' };
+                const labelStyle = { right: -labelOffset + 'px' };
                 _datePlacements[labelIndex] = labelStyle;
             });
             return _datePlacements;
