@@ -1,17 +1,56 @@
-<script setup>
+<script>
 import { RouterView } from 'vue-router';
 import SideNav from './components/layout/navigation/SideNav.vue';
 import TopNav from './components/layout/navigation/TopNav.vue';
 import Footer from './components/layout/Footer.vue';
+
+export default {
+    data() {
+        return {
+            prevHeight: 0,
+        };
+    },
+    components: {
+        SideNav,
+        TopNav,
+        Footer,
+        RouterView,
+    },
+    methods: {
+        beforeLeave(element) {
+            this.prevHeight = getComputedStyle(element).height;
+            console.log(getComputedStyle(element).height);
+        },
+        enter(element) {
+            const { height } = getComputedStyle(element).height;
+            console.log(getComputedStyle(element).height);
+
+            element.style.height = this.prevHeight;
+
+            setTimeout(() => {
+                element.style.height = height;
+            });
+        },
+        afterEnter(element) {
+            element.style.height = 'auto';
+        },
+    },
+};
 </script>
 
 <template>
-    <TopNav ref="topNav" />
+    <top-nav ref="topNav"></top-nav>
     <div class="main-content">
-        <SideNav :scrollActive="scrollActive" />
+        <side-nav :scrollActive="scrollActive"></side-nav>
         <main>
             <RouterView v-slot="{ Component, route }">
-                <Transition name="fade">
+                <Transition
+                    name="fade"
+                    mode="out-in"
+                    @beforeLeave="beforeLeave"
+                    @enter="enter"
+                    @afterEnter="afterEnter"
+                >
                     <div :key="route.name">
                         <component :is="Component" />
                     </div>
@@ -19,7 +58,7 @@ import Footer from './components/layout/Footer.vue';
             </RouterView>
         </main>
     </div>
-    <Footer />
+    <Footer></Footer>
 </template>
 
 <style lang="scss">
@@ -45,66 +84,76 @@ import Footer from './components/layout/Footer.vue';
     }
 }
 
-.fade-enter-active {
-    transition: all 2s ease-in;
-    .container {
-        .fancy-header {
-            h1 {
-                transition: all 0.5s ease-in;
-                transition-delay: 0.5s;
-            }
-        }
-        .fancy-subtitle {
-            transition: all 0.5s ease-in;
-            transition-delay: 1s;
-        }
-    }
+.fade-enter-active,
+.fade-leave-active {
+    transition-duration: 0.3s;
+    transition-property: height, opacity;
+    transition-timing-function: ease;
+    overflow: hidden;
+
+    // .container {
+    //     .fancy-header {
+    //         h1 {
+    //             transition: all 0.5s ease-in;
+    //             transition-delay: 0.5s;
+    //         }
+    //     }
+    //     .fancy-subtitle {
+    //         transition: all 0.5s ease-in;
+    //         transition-delay: 1s;
+    //     }
+    // }
 }
 
-.fade-enter-from {
+.fade-enter,
+.fade-leave-active {
     opacity: 0;
-    .container {
-        .fancy-header {
-            h1 {
-                left: -15px;
-                opacity: 0;
-
-                span {
-                    opacity: 0;
-                    &:first-of-type,
-                    &:nth-of-type(3) {
-                        top: -20px;
-                    }
-                    &:nth-of-type(2) {
-                        top: 20px;
-                    }
-                }
-            }
-        }
-        .fancy-subtitle {
-            opacity: 0;
-        }
-    }
 }
 
-.fade-enter-to {
-    opacity: 1;
-    .container {
-        .fancy-header {
-            h1 {
-                left: 0;
-                opacity: 1;
-            }
-            span {
-                opacity: 1;
-                top: 0;
-            }
-        }
-        .fancy-subtitle {
-            opacity: 1;
-        }
-    }
-}
+// .fade-enter-from {
+//     opacity: 0;
+//     .container {
+//         .fancy-header {
+//             h1 {
+//                 left: -15px;
+//                 opacity: 0;
+
+//                 span {
+//                     opacity: 0;
+//                     &:first-of-type,
+//                     &:nth-of-type(3) {
+//                         top: -20px;
+//                     }
+//                     &:nth-of-type(2) {
+//                         top: 20px;
+//                     }
+//                 }
+//             }
+//         }
+//         .fancy-subtitle {
+//             opacity: 0;
+//         }
+//     }
+// }
+
+// .fade-enter-to {
+//     opacity: 1;
+//     .container {
+//         .fancy-header {
+//             h1 {
+//                 left: 0;
+//                 opacity: 1;
+//             }
+//             span {
+//                 opacity: 1;
+//                 top: 0;
+//             }
+//         }
+//         .fancy-subtitle {
+//             opacity: 1;
+//         }
+//     }
+// }
 
 #app {
     max-width: 100vw;
@@ -116,7 +165,7 @@ import Footer from './components/layout/Footer.vue';
     .main-content {
         display: flex;
         flex: 1;
-        max-width: 100vw;
+        // max-width: 100vw;
 
         main {
             flex: 1;
