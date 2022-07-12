@@ -131,7 +131,7 @@ export default {
             <div class="profile-image-container">
                 <img
                     class="profile-image"
-                    src="https://via.placeholder.com/200x300"
+                    src="https://ik.imagekit.io/wwxxpwqes/tr:w-400,h-600/20220206_155220__1__T6FL5UiVp.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1657318099958"
                 />
             </div>
         </div>
