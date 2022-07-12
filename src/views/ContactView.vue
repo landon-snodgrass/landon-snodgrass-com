@@ -1,3 +1,45 @@
+<script>
+import { faMehRollingEyes } from '@fortawesome/free-solid-svg-icons';
+
+export default {
+    inject: ['backendUrl'],
+    data() {
+        return {
+            fromName: '',
+            fromEmail: '',
+            msgSubject: '',
+            msgType: '',
+            msgBody: '',
+        };
+    },
+    methods: {
+        submitForm() {
+            const msg = {
+                fromName: this.fromName,
+                fromEmail: this.fromEmail,
+                msgSubject: this.msgSubject,
+                msgType: this.msgType,
+                msgBody: this.msgBody,
+            };
+
+            fetch(`${this.backendUrl}/api/contact`, {
+                method: 'POST',
+                body: JSON.stringify({ msg }),
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+    },
+};
+</script>
+
 <template>
     <div class="contact-container">
         <div class="info">
@@ -26,15 +68,41 @@
             </p>
         </div>
         <div class="form">
-            <form>
+            <form @submit.prevent="submitForm">
                 <div class="form-row">
-                    <input type="text" placeholder="Your name" class="half" />
-                    <input type="email" placeholder="Your email" class="half" />
+                    <input
+                        type="text"
+                        placeholder="Your name"
+                        class="half"
+                        name="fromName"
+                        v-model="fromName"
+                        required
+                    />
+                    <input
+                        type="email"
+                        placeholder="Your email"
+                        class="half"
+                        name="fromEmail"
+                        v-model="fromEmail"
+                        required
+                    />
                 </div>
                 <div class="form-row">
-                    <input type="text" placeholder="Subject" class="half" />
-                    <select class="half">
-                        <option disabled selected>Report type</option>
+                    <input
+                        type="text"
+                        placeholder="Subject"
+                        class="half"
+                        name="msgSubject"
+                        v-model="msgSubject"
+                        required
+                    />
+                    <select
+                        class="half"
+                        name="msgType"
+                        v-model="msgType"
+                        required
+                    >
+                        <option disabled selected value="">Report type</option>
                         <option value="message">Message</option>
                         <option value="bugReport">Bug Report</option>
                         <option value="allyReport">Accessibility Report</option>
@@ -45,6 +113,9 @@
                     <textarea
                         placeholder="Your message"
                         class="full"
+                        name="msgBody"
+                        v-model="msgBody"
+                        required
                     ></textarea>
                 </div>
                 <div class="form-row" style="justify-content: end">
@@ -57,6 +128,7 @@
 
 <style lang="scss">
 @import '@/assets/variables.scss';
+@import '@/assets/common.scss';
 
 .contact-container {
     display: flex;
