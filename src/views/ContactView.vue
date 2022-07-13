@@ -1,26 +1,38 @@
 <script>
-import { faMehRollingEyes } from '@fortawesome/free-solid-svg-icons';
+import ContactForm from '../components/contact/ContactForm.vue';
+import ContactLoader from '../components/contact/ContactLoader.vue';
 
 export default {
     inject: ['backendUrl'],
+    components: {
+        ContactForm,
+        ContactLoader,
+    },
     data() {
         return {
-            fromName: '',
-            fromEmail: '',
-            msgSubject: '',
-            msgType: '',
-            msgBody: '',
+            loading: false,
+            error: false,
+            success: false,
+            formHeight: 0,
         };
     },
+    mounted() {
+        this.formHeight = this.$refs.formContainer.clientHeight;
+    },
     methods: {
-        submitForm() {
-            const msg = {
-                fromName: this.fromName,
-                fromEmail: this.fromEmail,
-                msgSubject: this.msgSubject,
-                msgType: this.msgType,
-                msgBody: this.msgBody,
-            };
+        clearForm() {
+            this.fromName = '';
+            this.fromEmail = '';
+            this.msgSubject = '';
+            this.msgBody = '';
+        },
+        resetForm() {
+            this.loading = false;
+            this.error = false;
+            this.success = false;
+        },
+        submitForm(msg) {
+            this.loading = true;
 
             fetch(`${this.backendUrl}/api/contact`, {
                 method: 'POST',
@@ -31,9 +43,15 @@ export default {
             })
                 .then((res) => {
                     console.log(res);
+                    this.success = true;
+                    //this.loading = false;
+                    this.clearForm();
                 })
                 .catch((err) => {
                     console.log(err);
+                    this.error = true;
+                    //this.loading = false;
+                    this.clearForm();
                 });
         },
     },
@@ -67,61 +85,12 @@ export default {
                 my portfolio site but web dev is hard...
             </p>
         </div>
-        <div class="form">
-            <form @submit.prevent="submitForm">
-                <div class="form-row">
-                    <input
-                        type="text"
-                        placeholder="Your name"
-                        class="half"
-                        name="fromName"
-                        v-model="fromName"
-                        required
-                    />
-                    <input
-                        type="email"
-                        placeholder="Your email"
-                        class="half"
-                        name="fromEmail"
-                        v-model="fromEmail"
-                        required
-                    />
-                </div>
-                <div class="form-row">
-                    <input
-                        type="text"
-                        placeholder="Subject"
-                        class="half"
-                        name="msgSubject"
-                        v-model="msgSubject"
-                        required
-                    />
-                    <select
-                        class="half"
-                        name="msgType"
-                        v-model="msgType"
-                        required
-                    >
-                        <option disabled selected value="">Report type</option>
-                        <option value="message">Message</option>
-                        <option value="bugReport">Bug Report</option>
-                        <option value="allyReport">Accessibility Report</option>
-                        <option value="suggestion">Suggestion</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <textarea
-                        placeholder="Your message"
-                        class="full"
-                        name="msgBody"
-                        v-model="msgBody"
-                        required
-                    ></textarea>
-                </div>
-                <div class="form-row" style="justify-content: end">
-                    <input type="submit" value="Submit" class="main-button" />
-                </div>
-            </form>
+        <div class="form" ref="formContainer">
+            <contact-form
+                v-if="!loading"
+                @form-submit="submitForm"
+            ></contact-form>
+            <contact-loader :height="formHeight" v-else></contact-loader>
         </div>
     </div>
 </template>
@@ -168,37 +137,6 @@ export default {
         width: 100%;
         border-bottom-right-radius: 5px;
         border-bottom-left-radius: 5px;
-
-        .form-row {
-            display: flex;
-            width: 100%;
-
-            .half {
-                flex: 1;
-            }
-
-            .full {
-                flex: 1;
-            }
-
-            input[type='submit'] {
-                margin: 10px;
-            }
-        }
-
-        input[type='text'],
-        input[type='email'],
-        textarea,
-        select {
-            background: transparent;
-            outline: none;
-            border: none;
-            border-bottom: solid 2px $color-dark;
-            padding: 10px;
-            margin: 10px;
-            @include font-serif-bold;
-            font-size: 22px;
-        }
     }
 }
 </style>
