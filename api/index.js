@@ -14,24 +14,6 @@ app.use(cors());
 
 const jsonParser = bodyParser.json();
 
-// const msg = {
-//     to: 'g.l.snodgrass95@gmail.com',
-//     from: 'g.l.snodgrass95@gmail.com',
-//     subject: 'Send with SendGrid!',
-//     text: 'Bonk bonk bonk',
-//     html: '<strong>html baby</strong>',
-// };
-
-// sgMail
-//     .send(msg)
-//     .then((response) => {
-//         console.log(response[0].statusCode);
-//         console.log(response[0].headers);
-//     })
-//     .catch((error) => {
-//         console.error(error);
-//     });
-
 const limiter = rateLimit({
     windowMs: 1000 * 60 * 30,
     max: 1,
@@ -63,10 +45,6 @@ async function getWeatherData() {
             axios.get(phoenixFetchUrl),
             axios.get(seattleFetchUrl),
         ]);
-        // const [phoenixData, seattleData] = await Promise.all([
-        //     phoenixResponse.json(),
-        //     seattleResponse.json(),
-        // ]);
         weatherData = {
             status: 200,
             phoenix: phoenixResponse.data.current,
@@ -80,9 +58,33 @@ async function getWeatherData() {
     }
 }
 
+function createFormSubmissionBody(formData) {
+    let html = '<p>';
+    for (const field in formData) {
+        html += `<p><strong>${field}:</strong> ${formData[field]}</p>`;
+    }
+    html += '</p>';
+    return html;
+}
+
 app.post('/api/contact', jsonParser, (req, res) => {
-    console.log(req.body, ' POST /api/contact');
-    res.status(200).send('Okay!');
+    const submissionMsg = createFormSubmissionBody(req.body.msg);
+
+    const msg = {
+        to: 'g.l.snodgrass95@gmail.com',
+        from: 'g.l.snodgrass95@gmail.com',
+        subject: 'Contact form submission from LandonSnodgrass.com',
+        html: submissionMsg,
+    };
+
+    sgMail
+        .send(msg)
+        .then((response) => {
+            res.status(response[0].statusCode).send('Okay!');
+        })
+        .catch((error) => {
+            res.status(500).send(error);
+        });
 });
 
 app.get('/api/weather', cors(), async (req, res) => {

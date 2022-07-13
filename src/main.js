@@ -13,6 +13,7 @@ import {
     faDatabase,
     faCode,
     faMapMarkerAlt,
+    faPaperPlane,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faVuejs,
@@ -43,7 +44,8 @@ library.add(
     faCode,
     faGithub,
     faLinkedin,
-    faMapMarkerAlt
+    faMapMarkerAlt,
+    faPaperPlane
 );
 
 // Global components
