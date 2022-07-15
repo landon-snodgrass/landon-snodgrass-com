@@ -14,6 +14,7 @@ export default {
             error: false,
             success: false,
             formHeight: 0,
+            sendStatus: -1,
         };
     },
     mounted() {
@@ -42,15 +43,14 @@ export default {
                 },
             })
                 .then((res) => {
+                    this.sendStatus = res.status;
                     console.log(res);
-                    this.success = true;
-                    //this.loading = false;
+                    console.log(this.sendStatus);
                     this.clearForm();
                 })
                 .catch((err) => {
-                    console.log(err);
-                    this.error = true;
-                    //this.loading = false;
+                    this.sendStatus = 500;
+                    console.error(err);
                     this.clearForm();
                 });
         },
@@ -73,7 +73,8 @@ export default {
                 Below is a form you can use to talk to me but, to be honest,
                 it's mostly just to prove I can make a form that works. I'm
                 pretty sure if anyone needs to contact me, they'll just use my
-                email.
+                email. However, the animation is pretty neat so you might want
+                to try it just for fun.
             </p>
             <br />
             <p>
@@ -86,11 +87,19 @@ export default {
             </p>
         </div>
         <div class="form" ref="formContainer">
-            <contact-form
-                v-if="!loading"
-                @form-submit="submitForm"
-            ></contact-form>
-            <contact-loader :height="formHeight" v-else></contact-loader>
+            <Transition name="zoom" mode="out-in">
+                <KeepAlive>
+                    <contact-form
+                        v-if="!loading"
+                        @form-submit="submitForm"
+                    ></contact-form>
+                    <contact-loader
+                        :height="formHeight"
+                        :status="sendStatus"
+                        v-else
+                    ></contact-loader>
+                </KeepAlive>
+            </Transition>
         </div>
     </div>
 </template>
@@ -137,6 +146,21 @@ export default {
         width: 100%;
         border-bottom-right-radius: 5px;
         border-bottom-left-radius: 5px;
+    }
+
+    .zoom-leave-from,
+    .zoom-enter-to {
+        transform: scale(1);
+    }
+
+    .zoom-leave-active,
+    .zoom-enter-active {
+        transition-duration: 0.3s;
+    }
+
+    .zoom-leave-to,
+    .zoom-enter-from {
+        transform: scale(0);
     }
 }
 </style>
