@@ -12,7 +12,7 @@
         "@fortawesome/fontawesome-svg-core": "^6.1.1",
         "@fortawesome/free-brands-svg-icons": "^6.1.1",
         "@fortawesome/free-solid-svg-icons": "^6.1.1",
-        "@fortawesome/vue-fontawesome": "^3.0.0-4",
+        "@fortawesome/vue-fontawesome": "^3.0.1",
         "@vuelidate/core": "^2.0.0-alpha.42",
         "@vuelidate/validators": "^2.0.0-alpha.30",
         "gsap": "^3.10.4",
