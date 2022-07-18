@@ -16,7 +16,7 @@
             <h1>Landon</h1>
             <p class="subtitle">Snodgrass</p>
         </div>
-        <a href="#">
+        <router-link to="/contact">
             <svg class="rectangle" width="145" height="49">
                 <path
                     d="M 0 0 L 145 0 L 145 49 L 0 49 Z"
@@ -29,7 +29,7 @@
                 mail
             </i>
             <span class="text" style="--transform-amount: -20px">Contact</span>
-        </a>
+        </router-link>
     </nav>
 </template>
 
