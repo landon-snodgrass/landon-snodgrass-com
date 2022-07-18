@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const port = 3080;
 var cors = require('cors');
 var cron = require('node-cron');
@@ -10,14 +11,11 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
 
 app.use(cors());
-app.use(express.static(path(frontendPath)));
+const frontendPath = path.join(__dirname + '/dist');
+
+app.use(express.static(frontendPath));
 
 const jsonParser = bodyParser.json();
-
-const limiter = rateLimit({
-    windowMs: 1000 * 60 * 30,
-    max: 1,
-});
 
 const phoenixLocation = {
     lon: -112.074036,
@@ -32,8 +30,6 @@ const seattleLocation = {
 const phoenixFetchUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${phoenixLocation.lat}&lon=${phoenixLocation.lon}&exclude=minutely,hourly,daily,alerts&units=imperial&appid=${process.env.WEATHER_API_KEY}`;
 
 const seattleFetchUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${seattleLocation.lat}&lon=${seattleLocation.lon}&exclude=minutely,hourly,daily,alerts&units=imperial&appid=${process.env.WEATHER_API_KEY}`;
-
-const frontendPath = path.join(__dirname + '/dist');
 
 var weatherData = {};
 
@@ -102,7 +98,7 @@ app.get('/api/weather', cors(), async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(frontendPath + 'index.html'));
+    res.sendFile(path.join(frontendPath + '/index.html'));
 });
 
 app.listen(port, () => {
