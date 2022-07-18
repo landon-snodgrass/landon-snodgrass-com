@@ -6,16 +6,18 @@ export default {
     data() {
         return {
             weatherIconPath: 'http://openweathermap.org/img/wn/',
+            error: false,
         };
     },
     components: {
         WeatherDetails,
     },
-    mounted() {
-        console.log('Weather container mounted');
-    },
     computed: {
         weatherMessage() {
+            if (this.weatherData.error || this.weatherData.phoenix.temp == 0) {
+                this.error = true;
+                return 'Sorry, looks like something went wrong with the backend.';
+            }
             const result = Math.sign(
                 this.weatherData.phoenix.temp - this.weatherData.seattle.temp
             );
@@ -33,7 +35,7 @@ export default {
 <template>
     <div class="weather">
         <h2 class="weather-message">{{ weatherMessage }}</h2>
-        <div class="weather-container">
+        <div class="weather-container" v-if="!error">
             <weather-details
                 :weather-data="weatherData.phoenix"
                 :weather-icon-path="

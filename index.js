@@ -1,16 +1,16 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const rateLimit = require('express-rate-limit');
+const port = 3080;
 var cors = require('cors');
 var cron = require('node-cron');
 const axios = require('axios');
 const app = express();
-const port = 3080;
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
 
 app.use(cors());
+app.use(express.static(path(frontendPath)));
 
 const jsonParser = bodyParser.json();
 
@@ -33,7 +33,7 @@ const phoenixFetchUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${p
 
 const seattleFetchUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${seattleLocation.lat}&lon=${seattleLocation.lon}&exclude=minutely,hourly,daily,alerts&units=imperial&appid=${process.env.WEATHER_API_KEY}`;
 
-//app.use(limiter);
+const frontendPath = path.join(__dirname + '/dist');
 
 var weatherData = {};
 
@@ -88,14 +88,28 @@ app.post('/api/contact', jsonParser, (req, res) => {
 });
 
 app.get('/api/weather', cors(), async (req, res) => {
-    res.status(weatherData.status).send(weatherData);
+    try {
+        res.status(weatherData.status).send(weatherData);
+    } catch (err) {
+        sgMail.send({
+            to: 'g.l.snodgrass95@gmail.com',
+            from: 'g.l.snodgrass95@gmail.com',
+            subject: 'Error trying to get weather data for LandonSnodgrass.com',
+            html: `<p>${error}</p>`,
+        });
+        res.status(500).send('Something went wrong');
+    }
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(frontendPath + 'index.html'));
 });
 
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);
     console.log('Running listening event');
-    // getWeatherData();
-    // cron.schedule('* 15 * * * *', () => {
-    //     getWeatherData();
-    // });
+    getWeatherData();
+    cron.schedule('*/15 * * * *', () => {
+        getWeatherData();
+    });
 });

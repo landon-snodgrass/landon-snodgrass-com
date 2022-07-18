@@ -102,6 +102,10 @@ export default {
                 };
                 this.weatherData.seattle = { ...seattleData };
                 this.weatherData.phoenix = { ...phoenixData };
+            } else {
+                this.weatherData = {
+                    error: 'Something went wrong in the backend.',
+                };
             }
         },
     },
