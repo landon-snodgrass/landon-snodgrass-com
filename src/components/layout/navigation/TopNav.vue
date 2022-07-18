@@ -1,6 +1,10 @@
 <template>
     <nav>
-        <a href="#">
+        <a
+            href="https://ik.imagekit.io/wwxxpwqes/George_Landon_Snodgrass_Resume_UgVu27VG-.pdf?ik-sdk-version=javascript-1.4.3&updatedAt=1658169605329"
+            target="_blank"
+            rel="noreferrer"
+        >
             <svg class="rectangle">
                 <path
                     d="M 0 0 L 145 0 L 145 49 L 0 49 Z"
@@ -12,10 +16,10 @@
             <span class="text" style="--transform-amount: 20px">Resume</span>
             <i class="material-symbols-outlined"> file_download </i>
         </a>
-        <div class="logo flip-animate">
+        <router-link class="logo" to="/">
             <h1>Landon</h1>
             <p class="subtitle">Snodgrass</p>
-        </div>
+        </router-link>
         <router-link to="/contact">
             <svg class="rectangle" width="145" height="49">
                 <path
@@ -47,7 +51,7 @@ nav {
     z-index: 1;
     max-width: 100vw;
 
-    a {
+    a:not(.logo) {
         margin: 20px;
         color: $color-gold;
         text-decoration: none;
@@ -116,17 +120,41 @@ nav {
         padding: 6px;
         position: relative;
         margin-bottom: 2px;
+        text-decoration: none;
 
         h1 {
             @include font-display;
             font-size: 32px;
             line-height: 36px;
             color: $color-gold;
+            background-image: linear-gradient($color-gold 0 0);
+            background-size: 200% 5px;
+            background-position: 200% 100%;
+            background-repeat: no-repeat;
+            transition: 0.25s;
+            text-decoration: none;
         }
         p.subtitle {
             @include font-serif-bold;
             font-size: 24px;
             color: $color-gold;
+            background-image: linear-gradient($color-gold 0 0);
+            background-size: 200% 5px;
+            background-position: 200% 100%;
+            background-repeat: no-repeat;
+            transition: 0.25s;
+            text-decoration: none;
+        }
+
+        &:hover {
+            cursor: pointer;
+            h1 {
+                background-position: 100% 100%;
+            }
+
+            p.subtitle {
+                letter-spacing: 2px;
+            }
         }
     }
 }
