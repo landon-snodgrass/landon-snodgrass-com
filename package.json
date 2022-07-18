@@ -9,6 +9,9 @@
         "build": "cd frontend && npm run build",
         "dev": "nodemon index.js localhost 3080"
     },
+    "engines": {
+        "node": "16.15.0"
+    },
     "author": "",
     "license": "ISC",
     "dependencies": {
