@@ -1,21 +1,5 @@
-require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const port = 3080;
-var cors = require('cors');
-var cron = require('node-cron');
-const axios = require('axios');
-const app = express();
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
-
-app.use(cors());
-const frontendPath = path.join(__dirname + '/dist');
-
-app.use(express.static(frontendPath));
-
-const jsonParser = bodyParser.json();
 
 const phoenixLocation = {
     lon: -112.074036,
@@ -63,7 +47,7 @@ function createFormSubmissionBody(formData) {
     return html;
 }
 
-app.post('/api/contact', jsonParser, (req, res) => {
+app.post('/api/contact', (req, res) => {
     const submissionMsg = createFormSubmissionBody(req.body.msg);
 
     const msg = {
@@ -100,6 +84,8 @@ app.get('/api/weather', cors(), async (req, res) => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(frontendPath + '/index.html'));
 });
+
+const port = process.env.PORT || 3080;
 
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);

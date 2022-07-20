@@ -56,8 +56,6 @@ export default {
             this.currentSkillList = newList;
         },
         beforeLeave(el) {
-            console.log(el.offsetParent);
-            console.log(el, ' ', el.offsetLeft);
             el.style.left = `${el.offsetLeft}px`;
             //el.style.position = 'absolute';
         },

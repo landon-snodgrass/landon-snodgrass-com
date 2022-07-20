@@ -65,7 +65,7 @@ export default {
     methods: {
         flipCard(isFlipped, interest) {
             this.interestDescription = interest.description;
-            this.currentIcon = 'src\\assets\\icons\\' + interest.icon;
+            this.currentIcon = 'icons\\' + interest.icon;
             this.interestTitle = interest.title;
             this.isFlipped = isFlipped;
             this.currentAttribution = interest.attribution;
@@ -86,9 +86,7 @@ export default {
                             :data-text="interest.title"
                             @click="flipCard(true, interest)"
                         >
-                            <img
-                                :src="'src\\assets\\icons\\' + interest.icon"
-                            />
+                            <img :src="'icons\\' + interest.icon" />
                         </span>
                     </li>
                 </ul>
