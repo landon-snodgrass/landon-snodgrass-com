@@ -170,4 +170,8 @@ export default {
         }
     }
 }
+
+.grecaptcha-badge {
+    z-index: 999;
+}
 </style>
