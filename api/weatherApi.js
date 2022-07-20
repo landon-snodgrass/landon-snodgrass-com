@@ -22,8 +22,6 @@ const config = {
 };
 
 const getWeatherData = async () => {
-    console.log('Getting weather data');
-    console.log(new Date().toString());
     try {
         const [phoenixResponse, seattleResponse] = await Promise.all([
             axios.get(config.phoenixFetchUrl),
