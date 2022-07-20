@@ -15,15 +15,12 @@ const weatherApi = require('./api/weatherApi.js');
 let weatherData;
 cron.schedule('*/15 * * * *', async () => {
     weatherData = await weatherApi.getWeatherData();
-    console.log(weatherData);
 });
 server.get('/api/weather', async (_, res) => {
     if (weatherData) {
-        console.log(weatherData);
         res.status(weatherData.status).send(weatherData);
     } else {
         weatherData = await weatherApi.getWeatherData();
-        console.log(weatherData);
         res.status(weatherData.status).send(weatherData);
     }
 });
@@ -42,4 +39,4 @@ server.use(express.static(__dirname + '/dist'));
 // Server start
 const port = process.env.PORT || 3080;
 
-server.listen(port, () => console.log(`Server listening on PORT:${port}`));
+server.listen(port);

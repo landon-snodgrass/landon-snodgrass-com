@@ -54,7 +54,7 @@ import Blurb from './components/Blurb.vue';
 import 'vue-universal-modal/dist/index.css';
 import VueUniversalModal from 'vue-universal-modal';
 
-const backendUrl = 'http://localhost:3080';
+const backendUrl = '';
 
 const app = createApp(App);
 
