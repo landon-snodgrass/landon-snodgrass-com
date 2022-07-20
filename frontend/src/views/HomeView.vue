@@ -57,7 +57,6 @@ export default {
         },
         beforeLeave(el) {
             el.style.left = `${el.offsetLeft}px`;
-            //el.style.position = 'absolute';
         },
         afterLeave(el) {
             el.style.left = 0;

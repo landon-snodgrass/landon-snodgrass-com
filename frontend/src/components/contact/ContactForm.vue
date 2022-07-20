@@ -1,12 +1,7 @@
 <script>
 import { VueRecaptcha } from 'vue-recaptcha';
-import useValidate from '@vuelidate/core';
-import { required, email } from '@vuelidate/validators';
 
 export default {
-    setup() {
-        return { v$: useValidate() };
-    },
     emits: ['formSubmit'],
     components: { VueRecaptcha },
     data() {
@@ -18,17 +13,8 @@ export default {
             msgBody: '',
         };
     },
-    validations() {
-        return {
-            fromName: { required },
-            fromEmail: { required, email },
-            msgSubject: { required },
-            msgType: { required },
-            msgBody: { required },
-        };
-    },
     methods: {
-        async submitForm() {
+        submitForm() {
             const msg = {
                 fromName: this.fromName,
                 fromEmail: this.fromEmail,
@@ -36,10 +22,6 @@ export default {
                 msgType: this.msgType,
                 msgBody: this.msgBody,
             };
-            const isFormValid = await this.v$.$validate();
-            if (!isFormValid) {
-                return;
-            }
             this.$emit('formSubmit', msg);
         },
         clearForm() {
@@ -115,21 +97,19 @@ export default {
             ></textarea>
         </div>
         <div class="form-row" style="justify-content: end">
-            <vue-recaptcha sitekey="6Lfo2ZMUAAAAAC8lvGVo3pZE3cGftutHigq4rB9Q">
-                <input
-                    type="submit"
-                    value="Submit"
-                    class="main-button"
-                    v-if="formValid"
-                />
-                <input
-                    type="submit"
-                    value="Submit"
-                    class="main-button"
-                    disabled
-                    v-else
-                />
+            <vue-recaptcha
+                sitekey="6Lfo2ZMUAAAAAC8lvGVo3pZE3cGftutHigq4rB9Q"
+                v-if="formValid"
+            >
+                <input type="submit" value="Submit" class="main-button" />
             </vue-recaptcha>
+            <input
+                type="submit"
+                value="Submit"
+                class="main-button"
+                disabled
+                v-else
+            />
         </div>
     </form>
 </template>
