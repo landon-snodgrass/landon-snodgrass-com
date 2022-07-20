@@ -385,7 +385,6 @@ $inactive: #aeb6bf;
 
             &::-webkit-progress-value {
                 background-color: $active;
-                //transition: 0.3s;
             }
         }
     }
