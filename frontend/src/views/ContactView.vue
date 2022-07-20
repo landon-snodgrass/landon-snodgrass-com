@@ -44,8 +44,6 @@ export default {
             })
                 .then((res) => {
                     this.sendStatus = res.status;
-                    console.log(res);
-                    console.log(this.sendStatus);
                     this.clearForm();
                 })
                 .catch((err) => {

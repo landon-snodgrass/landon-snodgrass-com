@@ -1,11 +1,3 @@
-<script>
-export default {
-    mounted() {
-        console.log('More info mounted');
-    },
-};
-</script>
-
 <template>
     <div class="more-info-container">
         <h3 class="more-info-headline">More info about the weather modal:</h3>
