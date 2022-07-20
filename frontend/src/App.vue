@@ -88,70 +88,12 @@ export default {
     transition-property: height, opacity;
     transition-timing-function: ease;
     overflow: hidden;
-
-    // .container {
-    //     .fancy-header {
-    //         h1 {
-    //             transition: all 0.5s ease-in;
-    //             transition-delay: 0.5s;
-    //         }
-    //     }
-    //     .fancy-subtitle {
-    //         transition: all 0.5s ease-in;
-    //         transition-delay: 1s;
-    //     }
-    // }
 }
 
 .fade-enter,
 .fade-leave-active {
     opacity: 0;
 }
-
-// .fade-enter-from {
-//     opacity: 0;
-//     .container {
-//         .fancy-header {
-//             h1 {
-//                 left: -15px;
-//                 opacity: 0;
-
-//                 span {
-//                     opacity: 0;
-//                     &:first-of-type,
-//                     &:nth-of-type(3) {
-//                         top: -20px;
-//                     }
-//                     &:nth-of-type(2) {
-//                         top: 20px;
-//                     }
-//                 }
-//             }
-//         }
-//         .fancy-subtitle {
-//             opacity: 0;
-//         }
-//     }
-// }
-
-// .fade-enter-to {
-//     opacity: 1;
-//     .container {
-//         .fancy-header {
-//             h1 {
-//                 left: 0;
-//                 opacity: 1;
-//             }
-//             span {
-//                 opacity: 1;
-//                 top: 0;
-//             }
-//         }
-//         .fancy-subtitle {
-//             opacity: 1;
-//         }
-//     }
-// }
 
 #app {
     max-width: 100vw;
@@ -163,7 +105,6 @@ export default {
     .main-content {
         display: flex;
         flex: 1;
-        // max-width: 100vw;
 
         main {
             flex: 1;
