@@ -19,11 +19,9 @@ export default {
     methods: {
         beforeLeave(element) {
             this.prevHeight = getComputedStyle(element).height;
-            console.log(getComputedStyle(element).height);
         },
         enter(element) {
             const { height } = getComputedStyle(element).height;
-            console.log(getComputedStyle(element).height);
 
             element.style.height = this.prevHeight;
 
