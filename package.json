@@ -7,7 +7,9 @@
         "postinstall": "cd frontend && npm install",
         "start": "node server.js",
         "build": "cd frontend && npm run build",
-        "dev": "nodemon server.js localhost 3080"
+        "dev": "concurrently npm:watch:*",
+        "watch:frontend": "cd frontend && npm run dev",
+        "watch:backend": "cross-env NODE_ENV=dev nodemon server.js"
     },
     "engines": {
         "node": "16.15.0"
@@ -19,11 +21,14 @@
         "@vitejs/plugin-vue": "^3.0.1",
         "axios": "^0.27.2",
         "body-parser": "^1.20.0",
+        "concurrently": "^7.3.0",
         "connect-history-api-fallback": "^2.0.0",
         "cors": "^2.8.5",
+        "cross-env": "^7.0.3",
         "dotenv": "^16.0.1",
         "express": "^4.18.1",
         "express-rate-limit": "^6.4.0",
+        "livereload": "^0.9.3",
         "node-cron": "^3.0.1",
         "node-fetch": "^3.2.6",
         "nodemon": "^2.0.19",

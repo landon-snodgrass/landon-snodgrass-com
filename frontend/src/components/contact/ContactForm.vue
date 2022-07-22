@@ -22,6 +22,7 @@ export default {
                 msgType: this.msgType,
                 msgBody: this.msgBody,
             };
+            console.log('Form submiting');
             this.$emit('formSubmit', msg);
         },
         clearForm() {
