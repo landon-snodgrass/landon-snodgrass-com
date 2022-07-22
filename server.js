@@ -34,9 +34,13 @@ server.post('/api/contact', (req, res) => {
 server.use(history());
 
 // Static client serving
-server.use(express.static(__dirname + '/dist'));
+if (process.env.NODE_ENV != 'dev') {
+    server.use(express.static(__dirname + '/dist'));
+} else {
+    server.use(express.static(__dirname + '/dev-dist'));
+}
 
 // Server start
-const port = process.env.PORT || 3080;
+const port = process.env.NODE_ENV != 'dev' ? process.env.PORT : 3080;
 
 server.listen(port);

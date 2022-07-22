@@ -2,7 +2,7 @@
     "name": "personal-site-frontend",
     "version": "1.0.0",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite build --watch",
         "build": "vite build",
         "preview": "vite preview --port 4173",
         "build-only": "vite build",
