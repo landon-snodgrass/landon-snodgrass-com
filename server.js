@@ -35,8 +35,10 @@ server.use(history());
 
 // Static client serving
 if (process.env.NODE_ENV != 'dev') {
+    console.log('Serving prod');
     server.use(express.static(__dirname + '/dist'));
 } else {
+    console.log('Serving dev');
     server.use(express.static(__dirname + '/dev-dist'));
 }
 
