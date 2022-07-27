@@ -71,7 +71,7 @@ export default {
 </template>
 
 <style lang="scss">
-@import '@/assets/variables.scss';
+@import '@@/assets/variables.scss';
 
 .loader-container {
     display: flex;

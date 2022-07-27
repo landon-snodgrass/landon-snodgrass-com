@@ -17,8 +17,8 @@
 </template>
 
 <style lang="scss">
-@import '@/assets/common.scss';
-@import '@/assets/variables.scss';
+@import '@@/assets/common.scss';
+@import '@@/assets/variables.scss';
 
 .more-info-container {
     @include font-serif-bold;

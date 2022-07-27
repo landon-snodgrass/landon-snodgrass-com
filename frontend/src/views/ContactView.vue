@@ -104,8 +104,8 @@ export default {
 </template>
 
 <style lang="scss">
-@import '@/assets/variables.scss';
-@import '@/assets/common.scss';
+@import '@@/assets/variables.scss';
+@import '@@/assets/common.scss';
 
 .contact-container {
     display: flex;

@@ -19,7 +19,7 @@
 </template>
 
 <style lang="scss">
-@import '@/assets/variables.scss';
+@import '@@/assets/variables.scss';
 
 .footer {
     background: $color-dark;

@@ -273,7 +273,7 @@ export default {
 </template>
 
 <style lang="scss">
-@import '@/assets/variables.scss';
+@import '@@/assets/variables.scss';
 
 $numDots: 20;
 $parentWidthBase: 0.8;

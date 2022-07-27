@@ -112,7 +112,7 @@ export default {
 </template>
 
 <style lang="scss">
-@import '@/assets/variables.scss';
+@import '@@/assets/variables.scss';
 
 $icon-size: 90px;
 

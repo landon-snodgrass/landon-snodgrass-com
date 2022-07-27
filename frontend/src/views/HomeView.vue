@@ -136,7 +136,7 @@ export default {
 </template>
 
 <style lang="scss">
-@import '@/assets/variables.scss';
+@import '@@/assets/variables.scss';
 
 .container {
     width: 90%;

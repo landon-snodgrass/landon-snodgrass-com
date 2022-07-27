@@ -16,7 +16,7 @@ export default {
 </template>
 
 <style lang="scss">
-@import '@/assets/variables.scss';
+@import '@@/assets/variables.scss';
 
 .blurb {
     margin-left: 30px;

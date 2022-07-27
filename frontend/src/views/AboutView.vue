@@ -184,7 +184,7 @@ export default {
 </template>
 
 <style lang="scss">
-@import '@/assets/common.scss';
+@import '@@/assets/common.scss';
 
 .about-container {
     display: flex;
