@@ -51,7 +51,7 @@ library.add(
 // Global components
 import Blurb from './components/Blurb.vue';
 
-import 'vue-universal-modal/dist/index.css';
+import '&/vue-universal-modal/dist/index.css';
 import VueUniversalModal from 'vue-universal-modal';
 
 const backendUrl = process.env.NODE_ENV != 'dev' ? '' : 'localhost:3080';
