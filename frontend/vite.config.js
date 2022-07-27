@@ -10,10 +10,7 @@ export default defineConfig(({ command }) => {
             plugins: [vue()],
             resolve: {
                 alias: {
-                    '@': fileURLToPath(new URL('./src', import.meta.url)),
-                    '&': fileURLToPath(
-                        new URL('./node_modules', import.meta.url)
-                    ),
+                    '@@': fileURLToPath(new URL('./src', import.meta.url)),
                 },
             },
             root: './',
@@ -26,10 +23,7 @@ export default defineConfig(({ command }) => {
             plugins: [vue()],
             resolve: {
                 alias: {
-                    '@': fileURLToPath(new URL('./src', import.meta.url)),
-                    '&': fileURLToPath(
-                        new URL('./node_modules', import.meta.url)
-                    ),
+                    '@@': fileURLToPath(new URL('./src', import.meta.url)),
                 },
             },
             root: './',

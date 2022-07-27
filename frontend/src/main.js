@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import { library } from '&/@fortawesome/fontawesome-svg-core';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faHome,
     faUser,
@@ -14,7 +14,7 @@ import {
     faCode,
     faMapMarkerAlt,
     faPaperPlane,
-} from '&/@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/free-solid-svg-icons';
 import {
     faVuejs,
     faReact,
@@ -24,8 +24,8 @@ import {
     faJsSquare,
     faGithub,
     faLinkedin,
-} from '&/@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '&/@fortawesome/vue-fontawesome';
+} from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(
     faHome,
@@ -51,8 +51,8 @@ library.add(
 // Global components
 import Blurb from './components/Blurb.vue';
 
-import '&/vue-universal-modal/dist/index.css';
-import VueUniversalModal from '&/vue-universal-modal';
+import 'vue-universal-modal/dist/index.css';
+import VueUniversalModal from 'vue-universal-modal';
 
 const backendUrl = process.env.NODE_ENV != 'dev' ? '' : 'localhost:3080';
 

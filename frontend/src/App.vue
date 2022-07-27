@@ -60,8 +60,8 @@ export default {
 </template>
 
 <style lang="scss">
-@import '@/assets/base.css';
-@import '@/assets/variables.scss';
+@import '@@/assets/base.css';
+@import '@@/assets/variables.scss';
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;700&family=Fascinate&family=Mulish:wght@500;700&display=swap');
 
 .vue-universal-modal {
