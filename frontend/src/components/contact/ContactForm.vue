@@ -15,6 +15,7 @@ export default {
     },
     methods: {
         submitForm() {
+            this.$refs.captcha.execute();
             const msg = {
                 fromName: this.fromName,
                 fromEmail: this.fromEmail,
@@ -99,10 +100,16 @@ export default {
         <div class="form-row" style="justify-content: end">
             <vue-recaptcha
                 sitekey="6Lfo2ZMUAAAAAC8lvGVo3pZE3cGftutHigq4rB9Q"
+                ref="captcha"
+                size="invisible"
                 v-if="formValid"
-            >
-                <input type="submit" value="Submit" class="main-button" />
-            </vue-recaptcha>
+            ></vue-recaptcha>
+            <input
+                type="submit"
+                value="Submit"
+                class="main-button"
+                v-if="formValid"
+            />
             <input
                 type="submit"
                 value="Submit"

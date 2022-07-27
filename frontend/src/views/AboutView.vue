@@ -24,7 +24,7 @@ export default {
                     cityName: 'Phoenix',
                 },
             },
-            //Modal animation data
+            // Modal animation data
             beforeEnterStyle: {
                 opacity: '0',
                 transform: 'translateY(20px)',
