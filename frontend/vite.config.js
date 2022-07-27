@@ -18,7 +18,9 @@ export default defineConfig(({ command }) => {
             build: {
                 outDir: '../dist',
                 rollupOptions: {
-                    external: ['/node_modules/'],
+                    external: [
+                        '/node_modules/@fortawesome/fontawesome-svg-core',
+                    ],
                 },
             },
         };
