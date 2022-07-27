@@ -11,9 +11,6 @@
         "watch:frontend": "cd frontend && npm run dev",
         "watch:backend": "cross-env NODE_ENV=dev nodemon server.js"
     },
-    "engines": {
-        "node": "16.15.0"
-    },
     "author": "",
     "license": "ISC",
     "dependencies": {
