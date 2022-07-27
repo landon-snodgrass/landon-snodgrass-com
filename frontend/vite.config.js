@@ -17,6 +17,9 @@ export default defineConfig(({ command }) => {
             base: '/frontend/',
             build: {
                 outDir: '../dist',
+                rollupOptions: {
+                    external: ['/node_modules/'],
+                },
             },
         };
     } else {
