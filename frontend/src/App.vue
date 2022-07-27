@@ -37,7 +37,6 @@ export default {
 </script>
 
 <template>
-    <h1>sdfjsdkhfkdsjfsh</h1>
     <top-nav ref="topNav"></top-nav>
     <div class="main-content">
         <side-nav :scrollActive="scrollActive"></side-nav>
