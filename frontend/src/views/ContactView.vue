@@ -33,6 +33,7 @@ export default {
             this.success = false;
         },
         submitForm(msg) {
+            console.log('Submit form from View');
             this.loading = true;
 
             fetch(`${this.backendUrl}/api/contact`, {
