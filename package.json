@@ -6,7 +6,7 @@
     "scripts": {
         "postinstall": "cd frontend && npm install",
         "start": "node server.js",
-        "build": "cd frontend && npm run build",
+        "build": "npm install && cd frontend && npm run build",
         "dev": "concurrently npm:watch:*",
         "watch:frontend": "cd frontend && npm run dev",
         "watch:backend": "cross-env NODE_ENV=dev nodemon server.js"
