@@ -26,13 +26,20 @@ export default {
         loaderAnimationIterate() {
             this.count++;
 
-            if (this.status == 202 && this.count >= 2) {
-                this.iconClasses = {
-                    spin: true,
-                };
-            } else {
-                this.messageText =
-                    'Something went wrong! Sorry, try again later.';
+            if (this.count >= 2) {
+                // At least 2 bounces to simulate loading so it doesn't look weird
+                if (this.status == 202) {
+                    this.iconClasses = {
+                        spin: true,
+                    };
+                } else {
+                    // TODO: change this so that it does a different animation for errors
+                    this.iconClasses = {
+                        spin: true,
+                    };
+                    this.messageText =
+                        'Something went wrong! Sorry, try again later.';
+                }
             }
         },
         loaderAnimationEnd() {
