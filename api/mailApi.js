@@ -26,6 +26,7 @@ const sendContactForm = (req, res) => {
             res.status(response[0].statusCode).send('Okay!');
         })
         .catch((error) => {
+            console.log(error);
             res.status(500).send(error);
         });
 };
