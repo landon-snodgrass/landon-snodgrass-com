@@ -30,7 +30,7 @@ export default {
                 this.iconClasses = {
                     spin: true,
                 };
-            } else if (this.status == 500) {
+            } else {
                 this.messageText =
                     'Something went wrong! Sorry, try again later.';
             }
@@ -66,7 +66,7 @@ export default {
             @animationiteration="loaderAnimationIterate"
             @animationend="loaderAnimationEnd"
         ></font-awesome-icon>
-        <h1 :class="messageClasses">Message sent!</h1>
+        <h1 :class="messageClasses">{{ messageText }}</h1>
     </div>
 </template>
 
